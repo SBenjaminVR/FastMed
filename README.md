@@ -10,6 +10,10 @@ npm i -D concurrently
 npm run dev
 ```
 
+# Importante - Instalar Material UI en la carpeta client (Es como un bootstrap)
+```javascript
+npm install @material-ui/core
+```
 
 Adicional (No se si se necesite) para instalar React
 ```javascript
