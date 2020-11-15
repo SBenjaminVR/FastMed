@@ -1,8 +1,8 @@
 # FastMed - Instrucciones para correr
 
-1. Instalar concurrently para poder correr react y node al mismo tiempo
+1. Instalar todos los modules que faltan en la carpeta base y en la carpeta client
 ```javascript
-npm i -D concurrently
+npm install
 ```
 
 2. Correr npm dev para correr ambos al mimso tiempo
