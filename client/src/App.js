@@ -4,6 +4,9 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
+import LogIn from './components/LogIn'
+import Register from './components/Register'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,6 +33,12 @@ function App() {
             <li>
               <Link to="/bot">Bot</Link>
             </li>
+            <li>
+              <Link to="/login">LogIn</Link>
+            </li>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
           </ul>
         </nav>
 
@@ -44,6 +53,12 @@ function App() {
           </Route>
           <Route path="/bot">
             <Bot />
+          </Route>
+          <Route path="/login">
+            <LogIn />
+          </Route>
+          <Route path="/register">
+            <Register />
           </Route>
           <Route path="/">
             <Dashboard />
