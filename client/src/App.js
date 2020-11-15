@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import Dashboard from "./components/Dashboard"
+import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
 import {
   BrowserRouter as Router,
@@ -65,8 +66,5 @@ function Users() {
   return <h2>Users</h2>;
 }
 
-function Bot() {
-  return <h2>Bot</h2>
-}
 
 export default App;
