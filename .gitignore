@@ -1,3 +1,8 @@
 node_modules
 client/node_modules
+<<<<<<< HEAD
 config.env
+=======
+.DS_Store
+config.env
+>>>>>>> 836a171b2c876f37b89ba9a7b51e2621a6413131
