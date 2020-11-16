@@ -1,4 +1,5 @@
 const Cita = require('./../models/citaModel');
+const Doctor = require('./../models/doctorModel');
 
 exports.getAllCitas  = async (req, res) => {
     try {
@@ -39,6 +40,19 @@ exports.getCita = async (req, res) => {
 
 exports.createCita = async (req, res) => {
     try {
+        const doctorCita = await Doctor.findOne({
+            $or: [
+                { "nombre" : { $regex: `${req.body.doctor}`, $options: 'i' }}, 
+                { "apellidos" : { $regex: `${req.body.doctor}`, $options: 'i' }},
+            ]
+        });
+        if (!doctorCita) {
+            res.status(400).json({
+                status: 'fail',
+                message: 'That doctor is not in the databse'
+            })
+        }
+        req.body.doctor = `${doctorCita._id}`;
         const newCita = await Cita.create(req.body);
 
         res.status(201).json({
