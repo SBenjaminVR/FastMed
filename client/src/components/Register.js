@@ -1,19 +1,21 @@
 import React from 'react'
+import { Button, TextField } from '@material-ui/core';
 
 function Register() {
     return (
         <div>
             <h1>Register page</h1>
-            <form id="register-form">
-                <h4>Username:</h4>
-                <input type="text" id="user-id" name="user-id" />
-                <h4>Password:</h4>
-                <input type="text" id="user-password" name="user-password" />
-                <h4>Confirm password:</h4>
-                <input type="text" id="user-password" name="user-password" />
-                <br /><br />
-                <button>Registrar</button>
-            </form>
+            <div className="login-form">
+                <form id="register-form">
+                    <TextField id="filled-basic" label="Usuario" variant="filled" className="login-field" />
+                    <br />
+                    <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field"/>
+                    <br />
+                    <TextField id="filled-basic" label="Confirmar contraseña" variant="filled" className="login-field" />
+                    <br /><br />
+                    <Button variant="contained" color="primary">Registrar</Button>
+                </form>
+            </div>
         </div>
     )
 }

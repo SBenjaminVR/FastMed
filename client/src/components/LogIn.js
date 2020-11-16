@@ -1,17 +1,20 @@
 import React from 'react'
+import { Button, TextField } from '@material-ui/core';
 
 function LogIn() {
     return (
         <div>
             <h1>LogIn page</h1>
+            <div className="login-form">
             <form id="login-form">
-                <h4>Username:</h4>
-                <input type="text" id="user-id" name="user-id" />
-                <h4>Password:</h4>
-                <input type="text" id="user-password" name="user-password" />
+                <TextField id="filled-basic" label="Usuario" variant="filled" className="login-field" />
+                <br />
+                <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field"/>
                 <br /> <br />
-                <button>Log in</button><button>New user</button>
+                <Button variant="contained" color="primary">Log in</Button>
+                <Button color="primary">Nuevo usuario</Button>
             </form>
+        </div>
         </div>
     )
 }
