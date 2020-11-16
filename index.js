@@ -2,6 +2,12 @@
 const dotenv = require('dotenv');
 const http = require("http");
 const mongoose = require('mongoose');
+const express = require('express');
+const morgan = require('morgan');
+
+const app = express();
+app.use(morgan('dev'));
+app.use(express.json());
 
 dotenv.config({ path: './config.env'});
 
@@ -10,6 +16,10 @@ mongoose.connect(DB, {useNewUrlParser: true, useCreateIndex: true, useFindAndMod
     console.log('DB connection sucessful!');
 })
 
+//Routes
+const doctorRouter = require('./server/routes/doctorRoutes');
+
+app.use('/api/doctors', doctorRouter);
 
 // Port Environment variable
 const PORT = process.env.PORT || 5000;
@@ -18,13 +28,13 @@ const PORT = process.env.PORT || 5000;
 const SERVER = http.createServer();
 
 // Firing up the server on selected port
-SERVER.listen(PORT);
+app.listen(PORT);
 
-SERVER.on("listening", () => {
+app.on("listening", () => {
     console.log("[Server]::LISTEN:%s", PORT);
 });
 
 // Callback function for checking connecting or error
-SERVER.on("error", error => {
+app.on("error", error => {
     throw new Error(`[Server]::ERROR:${error.message}`);
 });
