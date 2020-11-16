@@ -37,6 +37,6 @@ const consultaSchema = new mongoose.Schema({
         select: false
     }
 })
-const Consulta =  mongoose.model('Paciente', consultaSchema);
+const Consulta =  mongoose.model('Consulta', consultaSchema);
 
 module.exports = Consulta
