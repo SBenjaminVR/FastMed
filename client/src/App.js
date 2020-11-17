@@ -4,6 +4,7 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
+import CitaPaciente from './components/citas_paciente'
 import {
   BrowserRouter as Router,
   Switch,
@@ -40,7 +41,7 @@ function App() {
             <About />
           </Route>
           <Route path="/users">
-            <Users />
+            <CitaPaciente />
           </Route>
           <Route path="/bot">
             <Bot />
