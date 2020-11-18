@@ -4,13 +4,8 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
-<<<<<<< HEAD
-import LogIn from './components/LogIn'
-import Register from './components/Register'
-=======
 import CitaPaciente from './components/citas_paciente'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
->>>>>>> main
 
 import {
   BrowserRouter as Router,
