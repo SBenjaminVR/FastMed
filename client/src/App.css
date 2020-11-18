@@ -28,6 +28,38 @@
   color: #61dafb;
 }
 
+.cita-container {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.cita {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.citaDetalles {
+  margin-left: 20px;
+}
+
+.citaName {
+  font-weight: 600;
+}
+
+.citaMotivo {
+  font-weight: 200;
+}
+
+.fechaCita {
+  display: flex;
+  font-size: 24px;
+  font-weight: 600;
+  margin-right: 20px;
+  align-self: flex-end;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -4,7 +4,9 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
+import CitaPaciente from './components/citas_paciente'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -58,22 +60,22 @@ function App() {
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/users">
-              <Users />
-            </Route>
-            <Route path="/bot">
-              <Bot />
-            </Route>
-            <Route path="/">
-              <Dashboard />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/users">
+            <CitaPaciente />
+          </Route>
+          <Route path="/bot">
+            <Bot />
+          </Route>
+          <Route path="/">
+            <Dashboard />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
     </MuiThemeProvider>
   );
 }
