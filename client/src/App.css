@@ -33,9 +33,18 @@
   justify-content: center;
 }
 
+.register-form {
+  display: flex;
+  justify-content: left;
+}
+
 .login-field {
-  margin-top: 10px !important;
-  margin-bottom: 10px !important;
+  margin: 15px !important;
+}
+
+.login-button {
+  margin: 15px !important;
+}
 
 .cita-container {
   margin-left: 20px;

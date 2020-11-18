@@ -11,8 +11,8 @@ function LogIn() {
                 <br />
                 <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field"/>
                 <br /> <br />
-                <Button variant="contained" color="primary">Log in</Button>
-                <Button color="primary">Nuevo usuario</Button>
+                <Button variant="contained" color="primary" className="login-button">Log in</Button>
+                <Button color="primary" className="login-button">Nuevo usuario</Button>
             </form>
         </div>
         </div>
