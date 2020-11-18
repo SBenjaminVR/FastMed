@@ -1,24 +1,63 @@
 const Cita = require('./../models/citaModel');
 const Doctor = require('./../models/doctorModel');
 
-exports.getAllCitas  = async (req, res) => {
+exports.getAllCitas = async (req, res) => {
     try {
-    const citas = await Cita.find();
+        const citas = await Cita.find();
 
-    res.status(200).json({
-        status: 'success',
-        results: citas.length,
-        data: {
-            citas
-        }
-    });
-} catch (err) {
-    res.status(404).json({
-        status: 'fail',
-        message: err
-    })
-}
+        res.status(200).json({
+            status: 'success',
+            results: citas.length,
+            data: {
+                citas
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
 };
+
+exports.getCitasDoctor = async (req, res) => {
+    try {
+        const citasDoctor = await Cita.find({doctor: req.params.id});
+
+        res.status(200).json({
+            status: 'success',
+            results: citasDoctor.length,
+            data: {
+                citasDoctor
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
+};
+
+exports.getCitasPaciente = async (req, res) => {
+    try {
+        const citasPaciente = await Cita.find({paciente: req.params.id});
+
+        res.status(200).json({
+            status: 'success',
+            results: citasPaciente.length,
+            data: {
+                citasPaciente
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
+};
+
 
 exports.getCita = async (req, res) => {
     try {
@@ -42,8 +81,8 @@ exports.createCita = async (req, res) => {
     try {
         const doctorCita = await Doctor.findOne({
             $or: [
-                { "nombre" : { $regex: `${req.body.doctor}`, $options: 'i' }}, 
-                { "apellidos" : { $regex: `${req.body.doctor}`, $options: 'i' }},
+                { "nombre": { $regex: `${req.body.doctor}`, $options: 'i' } },
+                { "apellidos": { $regex: `${req.body.doctor}`, $options: 'i' } },
             ]
         });
         if (!doctorCita) {
@@ -71,7 +110,7 @@ exports.createCita = async (req, res) => {
 
 exports.updateCita = async (req, res) => {
     try {
-        const updatedCita = await Cita.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+        const updatedCita = await Cita.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
         res.status(200).json({
             status: 'success',

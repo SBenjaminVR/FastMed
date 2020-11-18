@@ -38,24 +38,10 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Router>
         <Navbar />
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
-              </li>
-              <li>
-                <Link to="/bot">Bot</Link>
-              </li>
-            </ul>
-          </nav>
+        <div style={{margin: "3%"}}>
 
+        </div>
+        <div>
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
