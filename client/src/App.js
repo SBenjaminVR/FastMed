@@ -4,8 +4,13 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
+<<<<<<< HEAD
 import LogIn from './components/LogIn'
 import Register from './components/Register'
+=======
+import CitaPaciente from './components/citas_paciente'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+>>>>>>> main
 
 import {
   BrowserRouter as Router,
@@ -14,42 +19,44 @@ import {
   Link
 } from "react-router-dom";
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#35a8a4',
+      dark: '#002884',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#fb7867',
+      main: '#fa5741',
+      dark: '#af3c2d',
+      contrastText: '#fff',
+    },
+    medicRed: {
+      main: '#fa5741',
+      contrastText: '#fff',
+    }
+  },
+});
+
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-            <li>
-              <Link to="/bot">Bot</Link>
-            </li>
-            <li>
-              <Link to="/login">LogIn</Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
-          </ul>
-        </nav>
+    <MuiThemeProvider theme={theme}>
+      <Router>
+        <Navbar />
+        <div style={{margin: "3%"}}>
 
-        {/* A <Switch> looks through its children <Route>s and
+        </div>
+        <div>
+          {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
             <About />
           </Route>
           <Route path="/users">
-            <Users />
+            <CitaPaciente />
           </Route>
           <Route path="/bot">
             <Bot />
@@ -66,11 +73,8 @@ function App() {
         </Switch>
       </div>
     </Router>
+    </MuiThemeProvider>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
 }
 
 function About() {
