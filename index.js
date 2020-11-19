@@ -2,14 +2,39 @@
 const dotenv = require('dotenv');
 const http = require("http");
 const mongoose = require('mongoose');
+const express = require('express');
+const morgan = require('morgan');
 
-dotenv.config({ path: './config.env'});
+const app = express();
+app.use(morgan('dev'));
+app.use(express.json());
+if (process.env.NODE_ENV !== 'production'){
+    dotenv.config({ path: './config.env'});
+}
+
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 mongoose.connect(DB, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false}).then(connection => {
     console.log('DB connection sucessful!');
 })
 
+//Routes
+const authRouter =require('./server/routes/authRoutes');
+const citaRouter = require('./server/routes/citaRoutes');
+const diagnosticoRouter = require('./server/routes/diagnosticoRoutes');
+const doctorRouter = require('./server/routes/doctorRoutes');
+const pacienteRouter = require('./server/routes/pacienteRoutes');
+const tratamientoRouter = require('./server/routes/tratamientoRoutes');
+const userRouter = require('./server/routes/userRoutes');
+
+
+app.use('/api/citas', citaRouter);
+app.use('/api/login', authRouter);
+app.use('/api/diagnosticos', diagnosticoRouter);
+app.use('/api/doctors', doctorRouter);
+app.use('/api/pacientes', pacienteRouter);
+app.use('/api/tratamientos', tratamientoRouter);
+app.use('/api/users', userRouter);
 
 // Port Environment variable
 const PORT = process.env.PORT || 5000;
@@ -18,13 +43,13 @@ const PORT = process.env.PORT || 5000;
 const SERVER = http.createServer();
 
 // Firing up the server on selected port
-SERVER.listen(PORT);
+app.listen(PORT);
 
-SERVER.on("listening", () => {
+app.on("listening", () => {
     console.log("[Server]::LISTEN:%s", PORT);
 });
 
 // Callback function for checking connecting or error
-SERVER.on("error", error => {
+app.on("error", error => {
     throw new Error(`[Server]::ERROR:${error.message}`);
 });
