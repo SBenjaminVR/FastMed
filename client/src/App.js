@@ -4,6 +4,7 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
+import Form from './components/ExpedienteForm'
 import {
   BrowserRouter as Router,
   Switch,
@@ -40,7 +41,7 @@ function App() {
             <About />
           </Route>
           <Route path="/users">
-            <Users />
+            <Form />
           </Route>
           <Route path="/bot">
             <Bot />

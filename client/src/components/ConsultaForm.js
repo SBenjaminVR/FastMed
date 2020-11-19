@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Grid, TextField, Typography} from '@material-ui/core'
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,9 +29,40 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  const initialState = {
+    loading: false,
+    error: "",
+    data: [],
+    form: {
+      fecha:"",
+      motivoConsulta: "",
+      evolucion: "",
+      exploracionFisica: {
+        altura: 0,
+        peso: 0,
+        imc: 0,
+        observacion: ""
+      },
+      tratamiento: ""
+
+    }
+  };
+
+
+
 function Form() {
+  const [data, setData] = useState(initialState);
   const classes = useStyles();
-  const {register} = useForm();
+
+  function handleConsulta(e) {
+    const dataField = [e.target.name];
+    data.form[dataField] = e.target.value;
+  }
+
+  function handleConsultaExploracion(e) {
+    const dataField = [e.target.name];
+    data.form.exploracionFisica[dataField] = e.target.value;
+  }
   
   return(
     <main className={classes.layout}>
@@ -40,11 +72,11 @@ function Form() {
         </Typography>
         <Grid container spacing={2} style={{marginBottom: 16}}>
           <Grid item xs={12} sm={12}>
-            <TextField variant = "outlined" type="text" label="motivo" name="motivo" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="motivo" name="motivoConsulta" onChange={handleConsulta} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={12}>
-             <TextField  item xs={12} sm={12} variant = "outlined" type="text" label="evolución"  name="evolucion" inputRef={register} fullWidth></TextField>
+             <TextField  item xs={12} sm={12} variant = "outlined" type="text" label="evolución"  name="evolucion" onChange={handleConsulta} fullWidth></TextField>
           </Grid>
 
         </Grid>
@@ -57,15 +89,15 @@ function Form() {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <TextField variant = "outlined" type="number" label="altura" name="altura" inputRef={register}></TextField>
+            <TextField variant = "outlined" type="number" label="altura" name="altura" onChange={handleConsultaExploracion}></TextField>
           </Grid>
 
           <Grid item xs={3}>
-             <TextField  item xs={12} sm={6} variant = "outlined" type="number" label="peso" name="peso" inputRef={register}></TextField>
+             <TextField  item xs={12} sm={6} variant = "outlined" type="number" label="peso" name="peso" onChange={handleConsultaExploracion}></TextField>
           </Grid>
 
           <Grid item xs={3}>
-              <TextField variant = "outlined" type="number" label="IMC" name="imc" inputRef={register} ></TextField>
+              <TextField variant = "outlined" type="number" label="IMC" name="imc" onChange={handleConsultaExploracion} ></TextField>
           </Grid>
         </Grid>
 
@@ -82,6 +114,8 @@ function Form() {
               multiline
               rows={5}
               variant="outlined"
+              name="observacion"
+              onChange={handleConsultaExploracion}
               fullWidth
             />
           </Grid>
@@ -95,6 +129,8 @@ function Form() {
               multiline
               rows={5}
               variant="outlined"
+              name="tratamiento"
+              onChange={handleConsulta}
               fullWidth
             />
           </Grid>        
@@ -116,6 +152,8 @@ function Form() {
             InputLabelProps={{
               shrink: true,
             }}
+            name="fecha"
+            onChange={handleConsulta}
             style={{marginRight: 32}}
           />
           </form>

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import {Grid, TextField, Typography} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-import { useForm } from "react-hook-form";
+import { set } from 'mongoose';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -29,9 +30,88 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  const initialState = {
+    loading: false,
+    error: "",
+    data: [],
+    form: {
+      nombre:"",
+      apellidos:"",
+      direccion: {
+        calle: "",
+        numero:'',
+        colonia:"",
+        codigoPostal:'',
+        ciudad:"",
+        estado:""
+      },
+      telefono: "",
+      datosFiscales: {
+        razonSocial:"",
+        rfc:"",
+        direccion: {
+          calle: "",
+          numero:'',
+          colonia:"",
+          codigoPostal:'',
+          ciudad:"",
+          estado:""
+        },
+        email:""
+      },
+      historialMedicoRelevante: {
+        antecedentesMedicos: "",
+        medicamenteUsoDiario: ""
+      }
+    }
+  };
+
+  
 function ExpedienteForm() {
+
+  const [data, setData] = useState(initialState);
   const classes = useStyles();
-  const {register} = useForm();
+  const axios = require('axios');
+
+  function handleDatosPersonales(e) {
+    const dataField = [e.target.name];
+    data.form[dataField] = e.target.value;
+  }
+
+  function handleDatosPersonalesDireccion(e) {
+    const dataField = [e.target.name];
+    data.form.direccion[dataField] = e.target.value;
+  }
+
+  function handleDatosFiscales(e) {
+    const dataField = [e.target.name];
+    data.form.datosFiscales[dataField] = e.target.value;
+  }
+
+  function handleDatosFiscalesDireccion(e) {
+    const dataField = [e.target.name];
+    data.form.datosFiscales.direccion[dataField] = e.target.value;
+  }
+
+  function handleHistorialMedicoRelevante(e) {
+    const dataField = [e.target.name];
+    data.form.historialMedicoRelevante[dataField] = e.target.value;
+  }
+
+  const sendPostRequest = async () => {
+    try {
+      const resp = await axios.post('http://localhost:4001/api/pacientes', data);
+      console.log(resp.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  function handlePost(e) {
+    console.log(data);
+    //validar data
+    sendPostRequest();
+  }
 
   return(
     <main className={classes.layout}>
@@ -41,39 +121,39 @@ function ExpedienteForm() {
         </Typography>
         <Grid container spacing={2} style={{marginBottom: 16}}>
           <Grid item xs={12} sm={6}>
-            <TextField required variant = "outlined" type="text" label="nombre" name="nombre" inputRef={register} fullWidth></TextField>
+            <TextField required variant = "outlined" type="text" label="nombre" name="nombre" onChange={handleDatosPersonales} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-             <TextField required item xs={12} sm={6} variant = "outlined" type="text" label="apellido" name="apellido" inputRef={register} fullWidth></TextField>
+             <TextField required item xs={12} sm={6} variant = "outlined" type="text" label="apellidos" name="apellidos" onChange={handleDatosPersonales} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="calle" name="calle" inputRef={register} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="calle" name="calle"  onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="número" name="numero" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="número" name="numero" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="código postal" name="cp" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="código postal" name="cp" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="colonia" name="colonia" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="colonia" name="colonia" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="estado" name="estado" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="estado" name="estado" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField required variant = "outlined" type="text" label="teléfono" name="telefono" inputRef={register} fullWidth></TextField>
+            <TextField required variant = "outlined" type="text" label="teléfono" name="telefono" onChange={handleDatosPersonales} fullWidth></TextField>
           </Grid>
         </Grid>
 
@@ -86,39 +166,39 @@ function ExpedienteForm() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="Razon social" name="razonSocila" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="Razon social" name="razonSocila" onChange={handleDatosFiscales} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-             <TextField  item xs={12} sm={6} variant = "outlined" type="text" label="RFC" name="rfc" inputRef={register} fullWidth></TextField>
+             <TextField  item xs={12} sm={6} variant = "outlined" type="text" label="RFC" name="rfc" onChange={handleDatosFiscales} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="calle" name="calle" inputRef={register} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="calle" name="calle" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="número" name="numero" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="número" name="numero" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="código postal" name="cp" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="código postal" name="cp" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="colonia" name="colonia" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="colonia" name="colonia" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="estado" name="estado" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="estado" name="estado" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="email" name="email" inputRef={register} fullWidth></TextField>
+            <TextField variant = "outlined" type="text" label="email" name="email" onChange={handleDatosFiscales} fullWidth></TextField>
           </Grid>
         </Grid>
 
@@ -135,6 +215,8 @@ function ExpedienteForm() {
               multiline
               rows={5}
               variant="outlined"
+              name="antecedentesMedicos"
+              onChange={handleHistorialMedicoRelevante}
               fullWidth
             />
           </Grid>
@@ -148,6 +230,8 @@ function ExpedienteForm() {
               multiline
               rows={5}
               variant="outlined"
+              name="medicamenteUsoDiario"
+              onChange={handleHistorialMedicoRelevante}
               fullWidth
             />
           </Grid>        
@@ -159,7 +243,7 @@ function ExpedienteForm() {
           justify="flex-end"
           alignItems="flex-end"
         >
-          <input  type="submit" style={{marginTop: 16}} />        
+          <button style={{marginTop: 16}} value="Submit" onClick={handlePost}></button>      
         </Grid>
       </Paper>
     </main>     
