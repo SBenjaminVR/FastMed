@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import Grid from "@material-ui/core/Grid" 
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios'
 
-const fetchCitas = () => {
+const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes','Sabado'];
+const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-    return [
-        {paciente: 'Juan Perez',
-        fecha:"23-11-2020 11:30 A.M.",
-        motivo:"Dolor de cabeza"
-        },
-        {paciente: 'Ramón Ayala',
-        fecha:"25-11-2020 1:30 P.M.",
-        motivo:"Estoy crudo"
-        },
-        {paciente: 'Gustavo Guzmán',
-        fecha:"25-11-2020 3:45 P.M.",
-        motivo:"GG ez"
-        },
-        {paciente: 'Esteban Dhido',
-        fecha:"26-11-2020 10:15 A.M.",
-        motivo:"Herida de bala"
-        },
-    ]
-        //console.log('fetchCitas');
+const convertirFecha = (fechaNativa) => {
+    let fechaNueva = new Date(fechaNativa);
+    let minutes = fechaNueva.getMinutes() < 10 ? '00' : fechaNueva.getMinutes();
+    return `${dias[fechaNueva.getDay()]} ${fechaNueva.getDate()} de ${meses[fechaNueva.getMonth()]} ${fechaNueva.getHours()}:${minutes}`
+}
+
+const fetchCitas = async () => {
+
+    const {data } = await axios.get(`http://localhost:4000/api/citas/doctor/5fb18ebbaac5d00878fa63ea`) 
+
+    return data.payload
+        
 }
  
 const  CitasDoctor = () => {
@@ -32,14 +27,22 @@ const [state, setState] = useState({
 })
 
     useEffect(() => {
-     
-        setState((prevState) => ({...prevState, citas: fetchCitas()}))
+        const fetchData = async () => {
+            const {citasData} = await fetchCitas();
+            for (let i = 0; i < citasData.length; i++) {
+                let fechaNueva = convertirFecha(citasData[i].fecha)
+                citasData[i]['fecha'] = fechaNueva;
+            }
+        
+            setState((prevState) => ({...prevState, citas: citasData}))
+        }
+    fetchData();
     }, [])
     
     return ( 
         <div className="cita-container">
             <h1 className='meg'>Usted tiene estas citas programadas</h1>
-            <p>Estas son las citas programadas dentro de los proximos 7 días</p>
+            <p>Estas son las próximas citas programadas </p>
             <Grid container direction="column" justify="center" alignItems="strech">
                 {state.citas && state.citas.map(cita => (<Cita cita={cita}/>))}
             </Grid>
@@ -55,7 +58,7 @@ console.log(cita);
 return (
     <Paper className ="cita"> 
         <Grid container direction="row" justify="space-between">
-            <div className="citaDetalles"><Grid container direction="column"> <div className="citaName">{cita.paciente}</div> <div className="citaMotivo">{cita.motivo}</div></Grid></div>
+            <div className="citaDetalles"><Grid container direction="column"> <div className="citaName">{cita.NombrePaciente}</div> <div className="citaMotivo">{cita.motivoCita}</div></Grid></div>
             <div className="fechaCita">{cita.fecha}</div>
         </Grid>
     </Paper>

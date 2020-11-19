@@ -42,7 +42,7 @@ const CitasPaciente = () => {
     return ( 
         <div className="cita-container">
             <h1 className='meg'>Mis citas</h1>
-            <p>Estas son las citas programadas dentro de los proximos 7 días</p>
+            <p>Estas son las próximas citas programadas</p>
             <Grid container direction="column" justify="center" alignItems="strech">
                 {state.citas && state.citas.map(cita => (<Cita cita={cita}/>))}
             </Grid>

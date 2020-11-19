@@ -5,6 +5,7 @@ import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
 import CitaPaciente from './components/citas_paciente'
+import CitaDoctor from './components/citas_doctor'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import {
@@ -52,6 +53,9 @@ function App() {
           </Route>
           <Route path="/users">
             <CitaPaciente />
+          </Route>
+          <Route path="/doctor">
+            <CitaDoctor />
           </Route>
           <Route path="/bot">
             <Bot />
