@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, TextField, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
+import Acios from 'axios';
+import Axios from 'axios';
 
 var userData = {
     firstName: "",
@@ -58,6 +60,13 @@ function onClick(e) {
     // Call to api
     // create new user
     // confirm
+    Axios.get('http://127.0.0.1:4000/api/users')
+    .then((response) => {
+        console.log(response);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 }
 
 function checkEmptyFields() {
