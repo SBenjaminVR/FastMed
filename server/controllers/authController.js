@@ -69,6 +69,7 @@ exports.login = async (req, res, next) => {
         res.status(200).json({
             status: 'success',
             type: rol,
+            id: usuario._id,
             token
         })
     }
