@@ -46,7 +46,7 @@ exports.getCitasPaciente = async (req, res) => {
         res.status(200).json({
             status: 'success',
             results: citasPaciente.length,
-            data: {
+            payload: {
                 citasPaciente
             }
         });
