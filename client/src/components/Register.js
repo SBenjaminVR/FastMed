@@ -1,15 +1,23 @@
-import React from 'react'
-import { Button, TextField } from '@material-ui/core';
+import React from 'react';
+import { Button, TextField, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
 
 var userData = {
     firstName: "",
     lastNames: "",
     email: "",
     password: "",
-    re_password: ""
+    re_password: "",
+    userType: ""
 }
 
 function Register() {
+    const [value, setValue] = React.useState('paciente');
+
+    const handleRadioChange = (event) => {
+        setValue(event.target.value);
+        userData.userType = event.target.value;
+    };
+
     return (
         <div>
             <h1>Register page</h1>
@@ -21,7 +29,11 @@ function Register() {
                     <TextField id="filled-basic" label="E-mail" variant="filled" className="login-field" name="email" onChange={handleChange} />
                     <br />
                     <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field" name="password" onChange={handleChange} />
-                    <TextField id="filled-basic" label="Confirmar contraseña" variant="filled" className="login-field" name="re_password" onChange={handleChange}/>
+                    <TextField id="filled-basic" label="Confirmar contraseña" variant="filled" className="login-field" name="re_password" onChange={handleChange} />
+                    <RadioGroup aria-label="userType" name="userType1" defaultValue="paciente" onChange={handleRadioChange} style={{marginLeft: "15px"}}>
+                        <FormControlLabel value="paciente" control={<Radio />} label="Paciente" />
+                        <FormControlLabel value="doctor" control={<Radio />} label="Doctor" />
+                    </RadioGroup>
                     <br /><br />
                     <Button type="submit" variant="contained" color="primary" className="login-button" onClick={onClick}>Registrar</Button>
                 </form>
@@ -44,7 +56,6 @@ function onClick(e) {
     if (!checkEqualPasswords()) console.log("No same passwords"); // change for alert
 
     // Call to api
-    // check if user already exists
     // create new user
     // confirm
 }

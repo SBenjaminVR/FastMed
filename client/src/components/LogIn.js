@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 
 var userData = {
@@ -38,7 +38,6 @@ function onClickLogIn(e) {
 
     // Call to api
     // check if user already exists
-    // create new user
     // confirm
 }
 
