@@ -1,5 +1,6 @@
 const Cita = require('./../models/citaModel');
 const Doctor = require('./../models/doctorModel');
+const User = require('./../models/userModel');
 
 exports.getAllCitas = async (req, res) => {
     try {
@@ -20,15 +21,31 @@ exports.getAllCitas = async (req, res) => {
     }
 };
 
+async function obtenerInformacionExtra(citas) {
+    let arr = [];
+    for (let cita of citas) {
+        let doctor = await Doctor.findById(cita.doctor);
+        let user = await User.findById(cita.paciente);
+
+        let nombreDoc = `Dr. ${doctor.nombre} ${doctor.apellidos}`;
+        let nombrePac = `${user.nombre} ${user.apellidos}`;
+        let datosExtra = {'NombreDoctor': nombreDoc, 'NombrePaciente': nombrePac};
+        arr.push({...cita._doc,...datosExtra});
+    }
+
+    return arr;
+}
+
 exports.getCitasDoctor = async (req, res) => {
     try {
-        const citasDoctor = await Cita.find({doctor: req.params.id});
+        let citasDoctor = await Cita.find({doctor: req.params.id});
+        let citasData = await obtenerInformacionExtra(citasDoctor);
 
         res.status(200).json({
             status: 'success',
             results: citasDoctor.length,
-            data: {
-                citasDoctor
+            payload: {
+                citasData
             }
         });
     } catch (err) {
@@ -42,12 +59,13 @@ exports.getCitasDoctor = async (req, res) => {
 exports.getCitasPaciente = async (req, res) => {
     try {
         const citasPaciente = await Cita.find({paciente: req.params.id});
+        let citasData = await obtenerInformacionExtra(citasPaciente);
 
         res.status(200).json({
             status: 'success',
             results: citasPaciente.length,
-            data: {
-                citasPaciente
+            payload: {
+                citasData
             }
         });
     } catch (err) {

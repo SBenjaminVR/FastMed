@@ -8,8 +8,10 @@ const morgan = require('morgan');
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
+if (process.env.NODE_ENV !== 'production'){
+    dotenv.config({ path: './config.env'});
+}
 
-dotenv.config({ path: './config.env'});
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 mongoose.connect(DB, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false}).then(connection => {
@@ -17,6 +19,7 @@ mongoose.connect(DB, {useNewUrlParser: true, useCreateIndex: true, useFindAndMod
 })
 
 //Routes
+const authRouter =require('./server/routes/authRoutes');
 const citaRouter = require('./server/routes/citaRoutes');
 const diagnosticoRouter = require('./server/routes/diagnosticoRoutes');
 const doctorRouter = require('./server/routes/doctorRoutes');
@@ -24,8 +27,10 @@ const pacienteRouter = require('./server/routes/pacienteRoutes');
 const tratamientoRouter = require('./server/routes/tratamientoRoutes');
 const userRouter = require('./server/routes/userRoutes');
 
+
 app.use('/api/citas', citaRouter);
-app.use('/api/diagonisticos', diagnosticoRouter);
+app.use('/api/login', authRouter);
+app.use('/api/diagnosticos', diagnosticoRouter);
 app.use('/api/doctors', doctorRouter);
 app.use('/api/pacientes', pacienteRouter);
 app.use('/api/tratamientos', tratamientoRouter);
