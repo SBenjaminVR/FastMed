@@ -4,6 +4,14 @@ import Paper from '@material-ui/core/Paper';
 import axios from 'axios'
 
 //window.localStorage.set('patient','5fb1cd3c75b837507498a7e7')
+const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes','Sabado'];
+const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+const convertirFecha = (fechaNativa) => {
+    let fechaNueva = new Date(fechaNativa);
+    let minutes = fechaNueva.getMinutes() < 10 ? '00' : fechaNueva.getMinutes();
+    return `${dias[fechaNueva.getDay()]} ${fechaNueva.getDate()} de ${meses[fechaNueva.getMonth()]} ${fechaNueva.getHours()}:${minutes}`
+}
 
 const fetchCitas = async () =>  {
     //const patient = window.localStorage.get('patient')
@@ -12,17 +20,23 @@ const fetchCitas = async () =>  {
     return data.payload
 }
  
-const  CitasPaciente = () => {
+const CitasPaciente = () => {
  
     const [state, setState] = useState({
         citas: [], loading: false, doctores: []
     })
 
-    useEffect( async() => {
-        const {citasPaciente} = await fetchCitas()
-        //console.log(citasPaciente);
-        
-        setState((prevState) => ({...prevState, citas: citasPaciente}))
+    useEffect(() => {
+        const fetchData = async () => {
+            const {citasData} = await fetchCitas();
+            for (let i = 0; i < citasData.length; i++) {
+                let fechaNueva = convertirFecha(citasData[i].fecha)
+                citasData[i]['fecha'] = fechaNueva;
+            }
+            
+            setState((prevState) => ({...prevState, citas: citasData}))
+        }
+        fetchData();
     }, [])
     
     return ( 
@@ -44,7 +58,7 @@ console.log(cita);
 return (
     <Paper className ="cita"> 
         <Grid container direction="row" justify="space-between">
-            <div className="citaDetalles"><Grid container direction="column"> <div className="citaName">{cita.doctor.nombre}</div> <div className="citaMotivo">{cita.motivo}</div></Grid></div>
+            <div className="citaDetalles"><Grid container direction="column"> <div className="citaName">{cita.NombreDoctor}</div> <div className="citaMotivo">{cita.motivoCita}</div></Grid></div>
             <div className="fechaCita">{cita.fecha}</div>
         </Grid>
     </Paper>
