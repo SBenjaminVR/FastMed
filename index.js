@@ -21,6 +21,7 @@ mongoose.connect(DB, {useNewUrlParser: true, useCreateIndex: true, useFindAndMod
 //Routes
 const authRouter =require('./server/routes/authRoutes');
 const citaRouter = require('./server/routes/citaRoutes');
+const consultaRouter = require('./server/routes/consultaRoutes');
 const diagnosticoRouter = require('./server/routes/diagnosticoRoutes');
 const doctorRouter = require('./server/routes/doctorRoutes');
 const pacienteRouter = require('./server/routes/pacienteRoutes');
@@ -35,6 +36,7 @@ app.use('/api/doctors', doctorRouter);
 app.use('/api/pacientes', pacienteRouter);
 app.use('/api/tratamientos', tratamientoRouter);
 app.use('/api/users', userRouter);
+app.use('/api/consultas', consultaRouter);
 
 // Port Environment variable
 const PORT = process.env.PORT || 5000;

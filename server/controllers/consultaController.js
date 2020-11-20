@@ -39,7 +39,9 @@ exports.getConsulta = async (req, res) => {
 
 exports.createConsulta = async (req, res) => {
     try {
+        console.log(req.body);
         const newConsulta = await Consulta.create(req.body);
+        console.log(newConsulta);
 
         res.status(201).json({
             status: 'success',
