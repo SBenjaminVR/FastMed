@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
-import {Grid, TextField, Typography} from '@material-ui/core'
+import {Grid, TextField, Typography,Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-import { useForm } from "react-hook-form";
+import { set } from 'mongoose';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-
     layout: {
       width: 'auto',
       marginLeft: theme.spacing(1),
@@ -29,9 +30,89 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  const initialState = {
+    loading: false,
+    error: "",
+    data: [],
+    form: {
+      nombre:"",
+      apellidos:"",
+      direccion: {
+        calle: "",
+        numero:0,
+        colonia:"",
+        codigoPostal:0,
+        ciudad:"",
+        estado:""
+      },
+      telefono: "",
+      datosFiscales: {
+        razonSocial:"",
+        rfc:"",
+        direccion: {
+          calle: "",
+          numero:0,
+          colonia:"",
+          codigoPostal:0,
+          ciudad:"",
+          estado:""
+        },
+        email:""
+      },
+      historialMedicoRelevante: {
+        antecedentesMedicos: "",
+        medicamenteUsoDiario: ""
+      },
+      doctor: "5fb1b343a0f77a4cac1af4a4"
+    }
+  };
+
 function ExpedienteForm() {
+  const [data, setData] = useState(initialState);
   const classes = useStyles();
-  const {register} = useForm();
+  const axios = require('axios');
+  let history = useHistory();
+
+  function handleDatosPersonales(e) {
+    const dataField = [e.target.name];
+    data.form[dataField] = e.target.value;
+  }
+
+  function handleDatosPersonalesDireccion(e) {
+    const dataField = [e.target.name];
+    data.form.direccion[dataField] = e.target.value;
+  }
+
+  function handleDatosFiscales(e) {
+    const dataField = [e.target.name];
+    data.form.datosFiscales[dataField] = e.target.value;
+  }
+
+  function handleDatosFiscalesDireccion(e) {
+    const dataField = [e.target.name];
+    data.form.datosFiscales.direccion[dataField] = e.target.value;
+  }
+
+  function handleHistorialMedicoRelevante(e) {
+    const dataField = [e.target.name];
+    data.form.historialMedicoRelevante[dataField] = e.target.value;
+  }
+
+  const sendPostRequest = async () => {
+    try {
+      const resp = await axios.post('http://localhost:4002/api/pacientes', data.form);
+      console.log(resp.data);
+      history.push("/", {succes: "Paciente form succesfully submitted."});
+    } catch (err) {
+      console.error(err.response);
+    }
+  };
+
+  function handlePost(e) {
+    e.preventDefault();
+    console.log(data.form);
+    sendPostRequest();
+  }
 
   return(
     <main className={classes.layout}>
@@ -39,128 +120,140 @@ function ExpedienteForm() {
         <Typography component="h2" variant="h4" align="center" style={{marginBottom: 16}}>
             Datos Personales
         </Typography>
-        <Grid container spacing={2} style={{marginBottom: 16}}>
-          <Grid item xs={12} sm={6}>
-            <TextField required variant = "outlined" type="text" label="nombre" name="nombre" inputRef={register} fullWidth></TextField>
+
+        <form onSubmit={handlePost}>
+          <Grid container spacing={2} style={{marginBottom: 16}}>
+            <Grid item xs={12} sm={6}>
+              <TextField required variant = "outlined" type="text" label="nombre" name="nombre" onChange={handleDatosPersonales} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField required item xs={12} sm={6} variant = "outlined" type="text" label="apellidos" name="apellidos" onChange={handleDatosPersonales} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+                <TextField variant = "outlined" type="text" label="calle" name="calle"  onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="número" name="numero" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="código postal" name="codigoPostal" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField variant = "outlined" type="text" label="colonia" name="colonia" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="estado" name="estado" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField required variant = "outlined" type="text" label="teléfono" name="telefono" onChange={handleDatosPersonales} fullWidth></TextField>
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
-             <TextField required item xs={12} sm={6} variant = "outlined" type="text" label="apellido" name="apellido" inputRef={register} fullWidth></TextField>
+          <Grid container spacing={2} style={{marginBottom: 16}}>
+            <Grid item xs={12} sm={12}>
+              <Divider variant="middle" />
+              <Typography component="h2" variant="h4" align="center" style={{marginTop: 16}}>
+                Datos Físcales
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField variant = "outlined" type="text" label="Razon social" name="razonSocial" onChange={handleDatosFiscales} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField  item xs={12} sm={6} variant = "outlined" type="text" label="RFC" name="rfc" onChange={handleDatosFiscales} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+                <TextField variant = "outlined" type="text" label="calle" name="calle" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="número" name="numero" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="código postal" name="codigoPostal" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField variant = "outlined" type="text" label="colonia" name="colonia" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <TextField variant = "outlined" type="text" label="estado" name="estado" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField variant = "outlined" type="text" label="email" name="email" onChange={handleDatosFiscales} fullWidth></TextField>
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="calle" name="calle" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="número" name="numero" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="código postal" name="cp" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="colonia" name="colonia" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="estado" name="estado" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField required variant = "outlined" type="text" label="teléfono" name="telefono" inputRef={register} fullWidth></TextField>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={2} style={{marginBottom: 16}}>
-          <Grid item xs={12} sm={12}>
-            <Divider variant="middle" />
-            <Typography component="h2" variant="h4" align="center" style={{marginTop: 16}}>
-              Datos Físcales
+          <Grid container spacing={5}>
+            <Grid item xs={12} sm={12}>
+              <Divider variant="middle" />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+            <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
+              Antecedentes Médicos
             </Typography>
-          </Grid>
+              <TextField
+                id="outlined-multiline-static"
+                multiline
+                rows={5}
+                variant="outlined"
+                name="antecedentesMedicos"
+                onChange={handleHistorialMedicoRelevante}
+                fullWidth
+              />
+            </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="Razon social" name="razonSocila" inputRef={register} fullWidth></TextField>
+            <Grid item xs={12} sm={12}>
+            <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
+                Medicamentos de uso diario
+            </Typography>
+              <TextField
+                id="outlined-multiline-static"
+                multiline
+                rows={5}
+                variant="outlined"
+                name="medicamenteUsoDiario"
+                onChange={handleHistorialMedicoRelevante}
+                fullWidth
+              />
+            </Grid>        
           </Grid>
-
-          <Grid item xs={12} sm={6}>
-             <TextField  item xs={12} sm={6} variant = "outlined" type="text" label="RFC" name="rfc" inputRef={register} fullWidth></TextField>
+          <Grid
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="flex-end"
+          >
+            <Button 
+              style={{marginTop: 16}} 
+              type="submit" 
+              variant="contained" 
+              color="primary" 
+              className="login-button" 
+              onClick={handlePost}>Submit</Button>   
           </Grid>
-
-          <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="calle" name="calle" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="número" name="numero" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="código postal" name="cp" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="colonia" name="colonia" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={6} sm={3}>
-            <TextField variant = "outlined" type="text" label="estado" name="estado" inputRef={register} fullWidth></TextField>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField variant = "outlined" type="text" label="email" name="email" inputRef={register} fullWidth></TextField>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={12}>
-            <Divider variant="middle" />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-          <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
-            Antecedentes Médicos
-          </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={5}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12}>
-          <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
-              Medicamentos de uso diario
-           </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={5}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>        
-        </Grid>
-
-        <Grid
-          container
-          direction="row"
-          justify="flex-end"
-          alignItems="flex-end"
-        >
-          <input  type="submit" style={{marginTop: 16}} />        
-        </Grid>
+        </form>
       </Paper>
     </main>     
   );

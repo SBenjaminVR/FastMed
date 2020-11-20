@@ -1,9 +1,12 @@
-import React from "react";
-import { Grid, TextField, Typography} from '@material-ui/core'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Grid, TextField, Typography,Button} from '@material-ui/core'
+import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-import { useForm } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
     layout: {
@@ -28,9 +31,74 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  const initialState = {
+    loading: false,
+    error: "",
+    data: [],
+    form: {
+      fecha:"",
+      motivoConsulta: "",
+      evolucion: "",
+      exploracionFisica: {
+        altura: 0,
+        peso: 0,
+        imc: 0,
+        observacion: ""
+      },
+      tratamiento: "",
+      doctor: "5fb1b343a0f77a4cac1af4a4",
+      paciente:""
+    },
+  };
+
 function Form() {
+  const [data, setData] = useState(initialState);
   const classes = useStyles();
-  const {register} = useForm();
+  let history = useHistory();
+
+  function handleConsulta(e) {
+    const dataField = [e.target.name];
+    data.form[dataField] = e.target.value;
+  }
+
+  function handleConsultaExploracion(e) {
+    const dataField = [e.target.name];
+    data.form.exploracionFisica[dataField] = e.target.value;
+  }
+
+  const sendPostRequest = async () => {
+    try {
+      const resp = await axios.post('http://localhost:4002/api/consultas', data.form);
+      console.log(resp.data);
+      history.push("/", {succes: "Consulta form succesfully submitted."});
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  function handlePost(e) {
+    e.preventDefault();
+    sendPostRequest();
+  }
+
+  const [state, setState] = useState({
+    citas: [], loading: false, pacientes: []
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const {pacientes} = await fetchPacientes();  
+        setState((prevState) => ({...prevState, pacientes: pacientes}))
+    }
+fetchData();
+}, [])
+
+  const pacientes = ["Uno","Dos","Tres"];
+
+  const fetchPacientes = async () => {
+    const {data } = await axios.get(`http://localhost:4002/api/pacientes`); 
+    return data.data;
+  }
   
   return(
     <main className={classes.layout}>
@@ -38,90 +106,116 @@ function Form() {
         <Typography component="h2" variant="h4" align="center" style={{marginBottom: 16}}>
             Consulta
         </Typography>
-        <Grid container spacing={2} style={{marginBottom: 16}}>
-          <Grid item xs={12} sm={12}>
-            <TextField variant = "outlined" type="text" label="motivo" name="motivo" inputRef={register} fullWidth></TextField>
+
+        <form onSubmit={handlePost}>
+          <Grid container spacing={2} style={{marginBottom: 16}}>
+
+            <Grid item xs={12} sm={12}>
+            <Select
+              variant = "outlined"
+              fullWidth
+              native
+              name="paciente"
+              onChange={handleConsulta}
+            >
+              {state.pacientes.map(paciente => (<option value= {paciente._id}>{`${paciente.nombre} ${paciente.apellidos}`}</option>))}
+            </Select>
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <TextField variant = "outlined" type="text" label="motivo" name="motivoConsulta" onChange={handleConsulta} fullWidth></TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <TextField  item xs={12} sm={12} variant = "outlined" type="text" label="evolución"  name="evolucion" onChange={handleConsulta} fullWidth></TextField>
+            </Grid>
+
           </Grid>
 
-          <Grid item xs={12} sm={12}>
-             <TextField  item xs={12} sm={12} variant = "outlined" type="text" label="evolución"  name="evolucion" inputRef={register} fullWidth></TextField>
+          <Grid container spacing={2} style={{marginBottom: 16}} justify="center">
+            <Grid item xs={12} sm={12}>
+              <Divider variant="middle" />
+              <Typography component="h2" variant="h4" align="center" style={{marginTop: 16}}>
+                Explorarción Física
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <TextField variant = "outlined" type="number" label="altura" name="altura" onChange={handleConsultaExploracion}></TextField>
+            </Grid>
+
+            <Grid item xs={3}>
+              <TextField  item xs={12} sm={6} variant = "outlined" type="number" label="peso" name="peso" onChange={handleConsultaExploracion}></TextField>
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField variant = "outlined" type="number" label="IMC" name="imc" onChange={handleConsultaExploracion} ></TextField>
+            </Grid>
           </Grid>
 
-        </Grid>
-
-        <Grid container spacing={2} style={{marginBottom: 16}} justify="center">
-          <Grid item xs={12} sm={12}>
-            <Divider variant="middle" />
-            <Typography component="h2" variant="h4" align="center" style={{marginTop: 16}}>
-              Explorarción Física
+          <Grid container spacing={5}>
+            <Grid item xs={12} sm={12}>
+              <Divider variant="middle" />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+            <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
+              Observación
             </Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <TextField variant = "outlined" type="number" label="altura" name="altura" inputRef={register}></TextField>
-          </Grid>
+              <TextField
+                id="outlined-multiline-static"
+                multiline
+                rows={5}
+                variant="outlined"
+                name="observacion"
+                onChange={handleConsultaExploracion}
+                fullWidth
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-             <TextField  item xs={12} sm={6} variant = "outlined" type="number" label="peso" name="peso" inputRef={register}></TextField>
+            <Grid item xs={12} sm={12}>
+            <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
+                Tratamiento
+            </Typography>
+              <TextField
+                id="outlined-multiline-static"
+                multiline
+                rows={5}
+                variant="outlined"
+                name="tratamiento"
+                onChange={handleConsulta}
+                fullWidth
+              />
+            </Grid>        
           </Grid>
-
-          <Grid item xs={3}>
-              <TextField variant = "outlined" type="number" label="IMC" name="imc" inputRef={register} ></TextField>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={12}>
-            <Divider variant="middle" />
-          </Grid>
-          <Grid item xs={12} sm={12}>
-          <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
-            Observación
-          </Typography>
+          <Grid
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="flex-end"
+            style={{marginTop: 38}}
+          >
             <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={5}
-              variant="outlined"
-              fullWidth
+              required
+              label="Fecha"
+              type="datetime-local"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              name="fecha"
+              onChange={handleConsulta}
+              style={{marginRight: 32}}
             />
+            <Button 
+              style={{marginTop: 16}} 
+              type="submit" 
+              variant="contained" 
+              color="primary" 
+              className="login-button" 
+              onClick={handlePost}
+              >Submit
+            </Button>   
           </Grid>
-
-          <Grid item xs={12} sm={12}>
-          <Typography component="h2" variant="h5" align="left" style={{marginBottom: 8}}>
-              Tratamiento
-           </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={5}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>        
-        </Grid>
-
-        <Grid
-          container
-          direction="row"
-          justify="flex-end"
-          alignItems="flex-end"
-          style={{marginTop: 38}}
-        >
-          <form className={classes.container} noValidate>
-          <TextField
-            required
-            label="Fecha"
-            type="datetime-local"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            style={{marginRight: 32}}
-          />
-          </form>
-          <input  type="submit" />
-          
-        </Grid>
+        </form>     
       </Paper>
     </main>     
   );

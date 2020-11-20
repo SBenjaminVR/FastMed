@@ -54,7 +54,7 @@ function App() {
             <About />
           </Route>
           <Route path="/users">
-            <CitaPaciente />
+            <Users />
           </Route>
           <Route path="/doctor">
             <CitaDoctor />

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 //Falta buscar como agregar las fotos (estudios diagnosticos)
 const consultaSchema = new mongoose.Schema({
@@ -14,7 +15,6 @@ const consultaSchema = new mongoose.Schema({
         imc: Number,
         observacion: String
     },
-    estudiosDiagnosticos: [String],
     doctor: {
         type: Schema.Types.ObjectId, 
         ref: 'Doctor'
@@ -23,14 +23,7 @@ const consultaSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId, 
         ref: 'Paciente'
     },
-    diagnostico: {
-        type: Schema.Types.ObjectId, 
-        ref: 'Diagnostico'
-    },
-    tratamiento: {
-        type: Schema.Types.ObjectId, 
-        ref: 'Tratamiento'
-    },
+    tratamiento: String,
     createdAt: {
         type: Date,
         default: Date.now(),
