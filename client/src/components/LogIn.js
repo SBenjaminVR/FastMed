@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
+import Axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 var userData = {
     email: "",
@@ -7,6 +9,38 @@ var userData = {
 }
 
 function LogIn() {
+    let history = useHistory();
+
+        // Update user data from input fields
+    function handleChange(e) {
+        const dataField = [e.target.name]
+        userData[dataField] = e.target.value
+    }
+
+    function onClickLogIn(e) {
+        e.preventDefault();
+        console.log("Login clicked...", userData);
+        
+        if (!checkEmptyFields()) console.log("Empty fields"); // change for alert
+
+        Axios.post('http://127.0.0.1:4000/api/login', userData)
+        .then((response) => {
+            console.log("Post succesful", response);
+            history.push("/", {succes: "Logged in successfully"});
+        })
+        .catch((err) => {
+            console.log("Post unsuccesful", err);
+        });
+    }
+
+    function checkEmptyFields() {
+        var valid = true
+        for (let [key, value] of Object.entries(userData)) {
+            if (value === "") valid = false;
+        }
+        return valid;
+    }
+    
     return (
         <div>
             <h1>LogIn page</h1>
@@ -22,31 +56,6 @@ function LogIn() {
         </div>
         </div>
     )
-}
-
-// Update user data from input fields
-function handleChange(e) {
-    const dataField = [e.target.name]
-    userData[dataField] = e.target.value
-}
-
-function onClickLogIn(e) {
-    e.preventDefault();
-    console.log("Login clicked...");
-    
-    if (!checkEmptyFields()) console.log("Empty fields"); // change for alert
-
-    // Call to api
-    // check if user already exists
-    // confirm
-}
-
-function checkEmptyFields() {
-    var valid = true
-    for (let [key, value] of Object.entries(userData)) {
-        if (value === "") valid = false;
-    }
-    return valid;
 }
 
 export default LogIn;
