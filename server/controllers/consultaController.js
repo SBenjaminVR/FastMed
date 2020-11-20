@@ -1,22 +1,41 @@
 const Consulta = require('./../models/consultaModel');
 
-exports.getAllConsultas  = async (req, res) => {
+exports.getAllConsultas = async (req, res) => {
     try {
-    const consultas = await Consulta.find();
+        const consultas = await Consulta.find();
 
-    res.status(200).json({
-        status: 'success',
-        results: consultas.length,
-        data: {
-            consultas
-        }
-    });
-} catch (err) {
-    res.status(404).json({
-        status: 'fail',
-        message: err
-    })
-}
+        res.status(200).json({
+            status: 'success',
+            results: consultas.length,
+            data: {
+                consultas
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
+};
+
+exports.getConsultasDoctor = async (req, res) => {
+    try {
+        const consultas = await Consulta.find({doctor: req.params.id});
+
+        res.status(200).json({
+            status: 'success',
+            results: consultas.length,
+            data: {
+                consultas
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
 };
 
 exports.getConsulta = async (req, res) => {
@@ -59,7 +78,7 @@ exports.createConsulta = async (req, res) => {
 
 exports.updateConsulta = async (req, res) => {
     try {
-        const updatedConsulta = await Consulta.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+        const updatedConsulta = await Consulta.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
         res.status(200).json({
             status: 'success',

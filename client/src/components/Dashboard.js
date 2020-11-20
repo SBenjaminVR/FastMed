@@ -20,12 +20,14 @@ const convertirFecha = (fechaNativa) => {
     return `${dias[fechaNueva.getDay()]} ${fechaNueva.getDate()} de ${meses[fechaNueva.getMonth()]} ${fechaNueva.getHours()}:${minutes}`
 }
 
-const fetchCitas = async () => {
+const fetchPacientes = async () => {
+    const { data } = await axios.get(`http://127.0.0.1:4000/api/pacientes/doctor/5fb18ebbaac5d00878fa63ea`); 
+    return data;
+}
 
-    const {data } = await axios.get(`http://localhost:4000/api/citas/doctor/5fb18ebbaac5d00878fa63ea`) 
-
-    return data.payload
-        
+const fetchConsultas = async () => {
+    const { data } = await axios.get(`http://127.0.0.1:4000/api/consultas/doctor/5fb18ebbaac5d00878fa63ea`);
+    return data;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -106,22 +108,28 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const [state, setState] = useState({
-        citas: [], loading: false, pacientes: []
+        consultasData: [], loading: false, pacientesData: []
     })
     
     useEffect(() => {
         const fetchData = async () => {
-            const {citasData} = await fetchCitas();
+            const pacientes = await fetchPacientes();
+            console.log(pacientes.data);
+            const consultas = await fetchConsultas();
+            console.log(consultas.data)
+            /*
             for (let i = 0; i < citasData.length; i++) {
                 let fechaNueva = convertirFecha(citasData[i].fecha)
                 citasData[i]['fecha'] = fechaNueva;
             }
+            */
         
-            setState((prevState) => ({...prevState, citas: citasData}))
+            setState((prevState) => ({...prevState, pacientesData: pacientes.data.pacientes}))
+            setState((prevState) => ({...prevState, consultasData: consultas.data.consultas}))
         }
     fetchData();
     }, [])
-    console.log(state.citas);
+    console.log(state);
     const classes = useStyles();
     return (
         <div>

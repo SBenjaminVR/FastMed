@@ -1,23 +1,42 @@
 const Paciente = require('./../models/pacienteModel');
 
-exports.getAllPacientes  = async (req, res) => {
+exports.getAllPacientes = async (req, res) => {
     try {
-    const pacientes = await Paciente.find();
+        const pacientes = await Paciente.find();
 
-    res.status(200).json({
-        status: 'success',
-        results: pacientes.length,
-        data: {
-            pacientes
-        }
-    });
-} catch (err) {
-    res.status(404).json({
-        status: 'fail',
-        message: err
-    })
-}
+        res.status(200).json({
+            status: 'success',
+            results: pacientes.length,
+            data: {
+                pacientes
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
 };
+
+exports.getPacientesDoctor = async (req, res) => {
+    try {
+        const pacientes = await Paciente.find({doctor: req.params.id});
+
+        res.status(200).json({
+            status: 'success',
+            results: pacientes.length,
+            data: {
+                pacientes
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
+}
 
 exports.getPaciente = async (req, res) => {
     try {
@@ -57,7 +76,7 @@ exports.createPaciente = async (req, res) => {
 
 exports.updatePaciente = async (req, res) => {
     try {
-        const updatedPaciente = await Paciente.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+        const updatedPaciente = await Paciente.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
         res.status(200).json({
             status: 'success',
