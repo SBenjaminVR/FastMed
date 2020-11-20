@@ -4,6 +4,8 @@ import React from "react";
 import Dashboard from "./components/Dashboard"
 import Bot from "./components/Bot"
 import Navbar from './components/Navbar'
+import LogIn from './components/LogIn'
+import Register from './components/Register'
 import CitaPaciente from './components/citas_paciente'
 import CitaDoctor from './components/citas_doctor'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -59,6 +61,12 @@ function App() {
           </Route>
           <Route path="/bot">
             <Bot />
+          </Route>
+          <Route path="/login">
+            <LogIn />
+          </Route>
+          <Route path="/register">
+            <Register />
           </Route>
           <Route path="/">
             <Dashboard />
