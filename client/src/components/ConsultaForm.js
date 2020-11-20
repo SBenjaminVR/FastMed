@@ -68,7 +68,7 @@ function Form() {
 
   const sendPostRequest = async () => {
     try {
-      const resp = await axios.post('http://localhost:4002/api/consultas', data.form);
+      const resp = await axios.post('https://fastmedexp.herokuapp.com/api/consultas', data.form);
       console.log(resp.data);
       history.push("/", {succes: "Consulta form succesfully submitted."});
     } catch (err) {
@@ -96,7 +96,7 @@ fetchData();
   const pacientes = ["Uno","Dos","Tres"];
 
   const fetchPacientes = async () => {
-    const {data } = await axios.get(`http://localhost:4002/api/pacientes`); 
+    const {data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes`); 
     return data.data;
   }
   

@@ -14,7 +14,7 @@ const convertirFecha = (fechaNativa) => {
 
 const fetchCitas = async () => {
 
-    const {data } = await axios.get(`http://localhost:4000/api/citas/doctor/5fb18ebbaac5d00878fa63ea`) 
+    const {data } = await axios.get(`https://fastmedexp.herokuapp.com/api/citas/doctor/5fb18ebbaac5d00878fa63ea`) 
 
     return data.payload
         

@@ -61,7 +61,7 @@ function onClick(e) {
     delete filteredData.re_password;
     console.log("Register data:", filteredData);
     
-    Axios.post('http://127.0.0.1:4000/api/' + userData.userType + '/signup', filteredData)
+    Axios.post('https://fastmedexp.herokuapp.com/api/' + userData.userType + '/signup', filteredData)
     .then((response) => {
         console.log("Post succesful", response);
     })

@@ -21,12 +21,12 @@ const convertirFecha = (fechaNativa) => {
 }
 
 const fetchPacientes = async () => {
-    const { data } = await axios.get(`http://127.0.0.1:4000/api/pacientes/doctor/5fb18ebbaac5d00878fa63ea`); 
+    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes/doctor/5fb18ebbaac5d00878fa63ea`); 
     return data;
 }
 
 const fetchConsultas = async () => {
-    const { data } = await axios.get(`http://127.0.0.1:4000/api/consultas/doctor/5fb18ebbaac5d00878fa63ea`);
+    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/consultas/doctor/5fb18ebbaac5d00878fa63ea`);
     return data;
 }
 

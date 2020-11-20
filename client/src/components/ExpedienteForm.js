@@ -100,7 +100,7 @@ function ExpedienteForm() {
 
   const sendPostRequest = async () => {
     try {
-      const resp = await axios.post('http://localhost:4002/api/pacientes', data.form);
+      const resp = await axios.post('https://fastmedexp.herokuapp.com/api/pacientes', data.form);
       console.log(resp.data);
       history.push("/", {succes: "Paciente form succesfully submitted."});
     } catch (err) {

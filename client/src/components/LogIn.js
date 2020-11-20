@@ -23,7 +23,7 @@ function LogIn() {
         
         if (!checkEmptyFields()) console.log("Empty fields"); // change for alert
 
-        Axios.post('http://127.0.0.1:4000/api/login', userData)
+        Axios.post('https://fastmedexp.herokuapp.com/api/login', userData)
         .then((response) => {
             console.log("Post succesful", response);
             history.push("/", {succes: "Logged in successfully"});
