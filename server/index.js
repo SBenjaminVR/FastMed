@@ -4,12 +4,13 @@ const http = require("http");
 const mongoose = require('mongoose');
 const express = require('express');
 const morgan = require('morgan');
+const path = require('path');
 
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 if (process.env.NODE_ENV !== 'production'){
-    dotenv.config({ path: './config.env'});
+    dotenv.config({ path: './../config.env'});
 }
 
 
@@ -18,15 +19,17 @@ mongoose.connect(DB, {useNewUrlParser: true, useCreateIndex: true, useFindAndMod
     console.log('DB connection sucessful!');
 })
 
+app.use(express.static(path.resolve('./client/build')));
+
 //Routes
-const authRouter =require('./server/routes/authRoutes');
-const citaRouter = require('./server/routes/citaRoutes');
-const consultaRouter = require('./server/routes/consultaRoutes');
-const diagnosticoRouter = require('./server/routes/diagnosticoRoutes');
-const doctorRouter = require('./server/routes/doctorRoutes');
-const pacienteRouter = require('./server/routes/pacienteRoutes');
-const tratamientoRouter = require('./server/routes/tratamientoRoutes');
-const userRouter = require('./server/routes/userRoutes');
+const authRouter =require('./routes/authRoutes');
+const citaRouter = require('./routes/citaRoutes');
+const consultaRouter = require('./routes/consultaRoutes');
+const diagnosticoRouter = require('./routes/diagnosticoRoutes');
+const doctorRouter = require('./routes/doctorRoutes');
+const pacienteRouter = require('./routes/pacienteRoutes');
+const tratamientoRouter = require('./routes/tratamientoRoutes');
+const userRouter = require('./routes/userRoutes');
 
 
 app.use('/api/citas', citaRouter);
@@ -37,6 +40,14 @@ app.use('/api/pacientes', pacienteRouter);
 app.use('/api/tratamientos', tratamientoRouter);
 app.use('/api/users', userRouter);
 app.use('/api/consultas', consultaRouter);
+
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./client/build/index.html'));
+  });
+  
+app.get('/*', (req,res) => {
+    res.sendFile(path.resolve('./client/build/index.html'));
+})
 
 // Port Environment variable
 const PORT = process.env.PORT || 5000;
