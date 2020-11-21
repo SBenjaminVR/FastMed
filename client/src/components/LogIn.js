@@ -26,6 +26,9 @@ function LogIn() {
         Axios.post('https://fastmedexp.herokuapp.com/api/login', userData)
         .then((response) => {
             console.log("Post succesful", response);
+            localStorage.setItem("token", response.token);
+            localStorage.setItem("type", response.type);
+            localStorage.setItem("id", response.id);
             history.push("/", {succes: "Logged in successfully"});
         })
         .catch((err) => {
@@ -43,12 +46,12 @@ function LogIn() {
     
     return (
         <div>
-            <h1>LogIn page</h1>
+            <h1>Login</h1>
             <div className="login-form">
             <form id="login-form">
                 <TextField id="filled-basic" label="Email" variant="filled" className="login-field" name="email" onChange={handleChange} />
                 <br />
-                <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field" name="password" onChange={handleChange} />
+                <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field" name="password" type="password" onChange={handleChange} />
                 <br /> <br />
                 <Button variant="contained" color="primary" className="login-button" onClick={onClickLogIn}>Entrar</Button>
                 <Button color="primary" className="login-button">Nuevo usuario</Button>

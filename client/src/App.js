@@ -9,6 +9,7 @@ import Register from './components/Register'
 import CitaPaciente from './components/citas_paciente'
 import CitaDoctor from './components/citas_doctor'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import PrivateRoute from './components/PrivateRoute';
 
 import {
   BrowserRouter as Router,
@@ -43,37 +44,23 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Router>
         <Navbar />
-        <div style={{margin: "3%"}}>
+        <div style={{ margin: "3%" }}>
 
         </div>
         <div>
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/doctor">
-            <CitaDoctor />
-          </Route>
-          <Route path="/bot">
-            <Bot />
-          </Route>
-          <Route path="/login">
-            <LogIn />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/">
-            <Dashboard />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+          <Switch>
+            <Route path="/login" component={LogIn} />
+            <Route path="/register" component={Register} />
+            <PrivateRoute path="/about" component={About} />
+            <PrivateRoute path="/users" component={Users} />
+            <PrivateRoute path="/doctor" component={CitaDoctor} />
+            <PrivateRoute path="/bot" component={Bot} />
+            <PrivateRoute path="/" component={Dashboard} />
+          </Switch>
+        </div>
+      </Router>
     </MuiThemeProvider>
   );
 }
