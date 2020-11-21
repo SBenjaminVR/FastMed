@@ -22,14 +22,15 @@ exports.getAllConsultas = async (req, res) => {
 
 exports.getConsultasDoctor = async (req, res) => {
     try {
-        const consultas = await Consulta.find({doctor: req.params.id});
-        for (let consulta of consultas) {
+        const consultasDoc = await Consulta.find({doctor: req.params.id});
+        let consultas = [];
+        for (let consulta of consultasDoc) {
             let paciente = await paciente.findById(consulta.paciente);
 
             let nombrePac = paciente.nombre;
             let apellidoPac = paciente.apellidos;
             let datosExtra = {'NombrePaciente': nombrePac, 'ApellidoPaciente': apellidoPac};
-            arr.push({...cita._doc,...datosExtra});
+            consultas.push({...consulta._doc,...datosExtra});
         }
 
         res.status(200).json({
