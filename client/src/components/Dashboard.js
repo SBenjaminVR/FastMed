@@ -136,6 +136,7 @@ function Dashboard() {
             for (let paciente of state.pacientesData) {
                 let historial = paciente.historialMedicoRelevante;
                 let tablerow = [];
+                console.log(""); //NO quitar o deja de jalar (EN SERIO)
                 tablerow.push(paciente.nombre);
                 tablerow.push(paciente.apellidos);
                 historial.antecedentesMedicos ? tablerow.push(historial.antecedentesMedicos) : tablerow.push("-");
@@ -149,6 +150,7 @@ function Dashboard() {
                 tablerow.push(convertirFecha(consulta.fecha))
                 tablerow.push(convertirHora(consulta.fecha))
                 table2Data.push(tablerow);
+                console.log(""); //NO quitar o deja de jalar (EN SERIO)
             }
             setState((prevState) => ({...prevState, t1Data: table1Data}))
             setState((prevState) => ({...prevState, t2Data: table2Data}))
