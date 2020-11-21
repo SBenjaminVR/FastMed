@@ -144,8 +144,8 @@ function Dashboard() {
             }
             for (let consulta of state.consultasData) {
                 let tablerow = [];
-                tablerow.push(consulta.nombre);
-                tablerow.push(consulta.apellidos);
+                tablerow.push(consulta.NombrePaciente);
+                tablerow.push(consulta.ApellidoPaciente);
                 tablerow.push(convertirFecha(consulta.fecha))
                 tablerow.push(convertirHora(consulta.fecha))
                 table2Data.push(tablerow);
