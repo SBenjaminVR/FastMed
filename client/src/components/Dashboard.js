@@ -35,6 +35,39 @@ const fetchConsultas = async () => {
     return data;
 }
 
+const formatearPacientes = async (pacientes) => {
+    console.log("ESTOY ADENTRO DE FORMATEAR PACIENTES");
+    let data = [];
+    for (let paciente of pacientes) {
+        console.log("ENTRE AL LOOP");
+        let historial = paciente.historialMedicoRelevante;
+        let tablerow = [];
+        tablerow.push(paciente.nombre);
+        tablerow.push(paciente.apellidos);
+        historial.antecedentesMedicos ? tablerow.push(historial.antecedentesMedicos) : tablerow.push("-");
+        historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
+        data.push(tablerow);
+    }
+    console.log("ANTES DE REGRESAR DATOS");
+    return data;
+}
+
+const formatearConsultas = async (consultas) => {
+    console.log("ESTOY ADENTRO DE FORMATEAR CONSULTAS");
+    let data = [];
+    for (let consulta of consultas) {
+        console.log("ENTRE AL LOOP");
+        let tablerow = [];
+        tablerow.push(consulta.NombrePaciente);
+        tablerow.push(consulta.ApellidoPaciente);
+        tablerow.push(convertirFecha(consulta.fecha))
+        tablerow.push(convertirHora(consulta.fecha))
+        data.push(tablerow);
+    }
+    console.log("ANTES DE REGRESAR DATOS");
+    return data;
+}
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -113,48 +146,18 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const [state, setState] = useState({
-        consultasData: [], loading: false, pacientesData: [], t1Data: [], t2Data: []
+        loading: false, t1Data: [], t2Data: []
     })
     
     useEffect(() => {
         const fetchData = async () => {
-            setState((prevState) => ({...prevState, loading: true}))
-            let table1Data = [], table2Data = [];
             const pacientes = await fetchPacientes();
             const consultas = await fetchConsultas();
-            console.log(consultas.data)
-            /*
-            for (let i = 0; i < citasData.length; i++) {
-                let fechaNueva = convertirFecha(citasData[i].fecha)
-                citasData[i]['fecha'] = fechaNueva;
-            }
-            */
         
-            setState((prevState) => ({...prevState, pacientesData: pacientes.data.pacientes}))
-            setState((prevState) => ({...prevState, consultasData: consultas.data.consultas}))
+            const table1Data = await formatearPacientes(pacientes.data.pacientes); 
+            const table2Data = await formatearConsultas(consultas.data.consultas);
 
-            for (let paciente of state.pacientesData) {
-                let historial = paciente.historialMedicoRelevante;
-                let tablerow = [];
-                console.log(""); //NO quitar o deja de jalar (EN SERIO)
-                tablerow.push(paciente.nombre);
-                tablerow.push(paciente.apellidos);
-                historial.antecedentesMedicos ? tablerow.push(historial.antecedentesMedicos) : tablerow.push("-");
-                historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
-                table1Data.push(tablerow);
-            }
-            for (let consulta of state.consultasData) {
-                let tablerow = [];
-                tablerow.push(consulta.NombrePaciente);
-                tablerow.push(consulta.ApellidoPaciente);
-                tablerow.push(convertirFecha(consulta.fecha))
-                tablerow.push(convertirHora(consulta.fecha))
-                table2Data.push(tablerow);
-                console.log(""); //NO quitar o deja de jalar (EN SERIO)
-            }
-            setState((prevState) => ({...prevState, t1Data: table1Data}))
-            setState((prevState) => ({...prevState, t2Data: table2Data}))
-            
+            setState((prevState) => ({...prevState, t1Data: table1Data, t2Data: table2Data}))
         }
     fetchData();
     }, [])
