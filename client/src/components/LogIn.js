@@ -29,7 +29,12 @@ function LogIn() {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("type", response.data.type);
             localStorage.setItem("id", response.data.id);
-            history.push("/", {succes: "Logged in successfully"});
+            if (response.data.type === 'Doctor') {
+                history.push("/", {succes: "Logged in successfully"});
+            }
+            else {
+                history.push("/paciente", {succes: "Logged in successfully"});
+            }
         })
         .catch((err) => {
             console.log("Post unsuccesful", err);

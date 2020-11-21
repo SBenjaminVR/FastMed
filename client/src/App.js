@@ -10,6 +10,8 @@ import CitaPaciente from './components/citas_paciente'
 import CitaDoctor from './components/citas_doctor'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import PrivateRoute from './components/PrivateRoute';
+import PrivateRouteD from './components/PrivateRouteD';
+import PrivateRouteU from './components/PrivateRouteU';
 
 import {
   BrowserRouter as Router,
@@ -53,11 +55,11 @@ function App() {
           <Switch>
             <Route path="/login" component={LogIn} />
             <Route path="/register" component={Register} />
-            <PrivateRoute path="/about" component={About} />
-            <PrivateRoute path="/users" component={Users} />
-            <PrivateRoute path="/doctor" component={CitaDoctor} />
-            <PrivateRoute path="/bot" component={Bot} />
-            <PrivateRoute path="/" component={Dashboard} />
+            <PrivateRouteD path="/about" component={About} />
+            <PrivateRouteU path="/paciente" component={CitaPaciente} />
+            <PrivateRouteD path="/doctor" component={CitaDoctor} />
+            <PrivateRouteU path="/bot" component={Bot} />
+            <PrivateRouteD path="/" component={Dashboard} />
           </Switch>
         </div>
       </Router>
@@ -67,10 +69,6 @@ function App() {
 
 function About() {
   return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }
 
 
