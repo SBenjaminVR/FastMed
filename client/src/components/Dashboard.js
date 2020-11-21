@@ -16,8 +16,13 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
 
 const convertirFecha = (fechaNativa) => {
     let fechaNueva = new Date(fechaNativa);
+    return `${dias[fechaNueva.getDay()]} ${fechaNueva.getDate()} de ${meses[fechaNueva.getMonth()]}`
+}
+
+const convertirHora = (fechaNativa) => {
+    let fechaNueva = new Date(fechaNativa);
     let minutes = fechaNueva.getMinutes() < 10 ? '00' : fechaNueva.getMinutes();
-    return `${dias[fechaNueva.getDay()]} ${fechaNueva.getDate()} de ${meses[fechaNueva.getMonth()]} ${fechaNueva.getHours()}:${minutes}`
+    return `${fechaNueva.getHours()}:${minutes}`
 }
 
 const fetchPacientes = async () => {
@@ -108,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const [state, setState] = useState({
-        consultasData: [], loading: false, pacientesData: [], t1Data: []
+        consultasData: [], loading: false, pacientesData: [], t1Data: [], t2Data: []
     })
     
     useEffect(() => {
@@ -136,9 +141,17 @@ function Dashboard() {
                 historial.antecedentesMedicos ? tablerow.push(historial.antecedentesMedicos) : tablerow.push("-");
                 historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
                 table1Data.push(tablerow);
-                console.log("HERE");
+            }
+            for (let consulta of state.consultasData) {
+                let tablerow = [];
+                tablerow.push(consulta.nombre);
+                tablerow.push(consulta.apellidos);
+                tablerow.push(convertirFecha(consulta.fecha))
+                tablerow.push(convertirHora(consulta.fecha))
+                table2Data.push(tablerow);
             }
             setState((prevState) => ({...prevState, t1Data: table1Data}))
+            setState((prevState) => ({...prevState, t2Data: table2Data}))
             
         }
     fetchData();
@@ -270,14 +283,7 @@ function Dashboard() {
                             <Table
                                 tableHeaderColor="primary"
                                 tableHead={["Nombre", "Apellidos", "Fecha", "Hora"]}
-                                tableData={[
-                                    ["Axel", "Hernandez Rodríguez", "Martes 24 de Noviembre", "4:00 PM"],
-                                    ["Lorena", "Pérez Rodríguez", "Martes 24 de Noviembre", "4:30 PM"],
-                                    ["Martin", "González Martinez", "Martes 24 de Noviembre", "5:00 PM"],
-                                    ["Sofía", "Chavez Díaz", "Martes 24 de Noviembre", "5:30 PM"],
-                                    ["Mónica", "Gutierrez Serna", "Martes 24 de Noviembre", "6:00 PM"],
-                                    ["Enrique", "Montemayor", "Miercoles 25 de Noviembre", "4:30 PM"]
-                                ]}
+                                tableData={state.t2Data || []}
                             />
 
                         </CardBody>
