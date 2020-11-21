@@ -108,13 +108,14 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const [state, setState] = useState({
-        consultasData: [], loading: false, pacientesData: []
+        consultasData: [], loading: false, pacientesData: [], t1Data: []
     })
     
     useEffect(() => {
         const fetchData = async () => {
+            setState((prevState) => ({...prevState, loading: true}))
+            let table1Data = [], table2Data = [];
             const pacientes = await fetchPacientes();
-            console.log(pacientes.data);
             const consultas = await fetchConsultas();
             console.log(consultas.data)
             /*
@@ -126,6 +127,19 @@ function Dashboard() {
         
             setState((prevState) => ({...prevState, pacientesData: pacientes.data.pacientes}))
             setState((prevState) => ({...prevState, consultasData: consultas.data.consultas}))
+
+            for (let paciente of state.pacientesData) {
+                let historial = paciente.historialMedicoRelevante;
+                let tablerow = [];
+                tablerow.push(paciente.nombre);
+                tablerow.push(paciente.apellidos);
+                historial.antecedentesMedicos ? tablerow.push(historial.antecedentesMedicos) : tablerow.push("-");
+                historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
+                table1Data.push(tablerow);
+                console.log("HERE");
+            }
+            setState((prevState) => ({...prevState, t1Data: table1Data}))
+            
         }
     fetchData();
     }, [])
@@ -204,14 +218,7 @@ function Dashboard() {
                             <Table
                                 tableHeaderColor="primary"
                                 tableHead={["Nombre", "Apellidos", "Antecedentes Médicos", "Médicamentos de uso diario"]}
-                                tableData={[
-                                    ["Jonathan", "López Favela", "Diabetes", "Insulina"],
-                                    ["Salvador", "Ayala Cardenas", "Fractura de tobillo", "-"],
-                                    ["Enrique", "Montemayor", "Fractura de meñique", "-"],
-                                    ["Laura", "Salinas Arroyo", "-", "-"],
-                                    ["Micaela", "Castro Flores", "Golpe en rodilla", "Anti-inflamatorio"],
-                                    ["Beatriz", "Espinoza Sanchez", "Fractura de brazo izquierdo", "Cataflam"],
-                                ]}
+                                tableData={ state.t1Data || [] }
                             />
 
                         </CardBody>

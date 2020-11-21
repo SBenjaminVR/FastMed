@@ -1,4 +1,5 @@
 const Consulta = require('./../models/consultaModel');
+const Paciente = require('./../models/pacienteModel');
 
 exports.getAllConsultas = async (req, res) => {
     try {
@@ -22,6 +23,14 @@ exports.getAllConsultas = async (req, res) => {
 exports.getConsultasDoctor = async (req, res) => {
     try {
         const consultas = await Consulta.find({doctor: req.params.id});
+        for (let consulta of consultas) {
+            let paciente = await paciente.findById(consulta.paciente);
+
+            let nombrePac = paciente.nombre;
+            let apellidoPac = paciente.apellidos;
+            let datosExtra = {'NombrePaciente': nombrePac, 'ApellidoPaciente': apellidoPac};
+            arr.push({...cita._doc,...datosExtra});
+        }
 
         res.status(200).json({
             status: 'success',
