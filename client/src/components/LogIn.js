@@ -31,9 +31,11 @@ function LogIn() {
             localStorage.setItem("id", response.data.id);
             if (response.data.type === 'Doctor') {
                 history.push("/", {succes: "Logged in successfully"});
+                window.location.reload();
             }
             else {
                 history.push("/paciente", {succes: "Logged in successfully"});
+                window.location.reload();
             }
         })
         .catch((err) => {

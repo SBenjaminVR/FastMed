@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import Pagination from '@material-ui/lab/Pagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios'
 
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes','Sabado'];
@@ -146,7 +147,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const [state, setState] = useState({
-        loading: false, t1Data: [], t2Data: []
+        loading: true, t1Data: [], t2Data: []
     })
     
     useEffect(() => {
@@ -157,7 +158,7 @@ function Dashboard() {
             const table1Data = await formatearPacientes(pacientes.data.pacientes); 
             const table2Data = await formatearConsultas(consultas.data.consultas);
 
-            setState((prevState) => ({...prevState, t1Data: table1Data, t2Data: table2Data}))
+            setState((prevState) => ({...prevState, t1Data: table1Data, t2Data: table2Data, loading: false}))
         }
     fetchData();
     }, [])
@@ -233,12 +234,14 @@ function Dashboard() {
                             </div>
                         </CardHeader>
                         <CardBody>
-                            <Table
+                        {state.loading 
+                                ? <CircularProgress />
+                                : <Table
                                 tableHeaderColor="primary"
                                 tableHead={["Nombre", "Apellidos", "Antecedentes Médicos", "Médicamentos de uso diario"]}
                                 tableData={ state.t1Data || [] }
                             />
-
+                        }
                         </CardBody>
                         <div style={{ margin: "auto" }}>
                             <Pagination count={10} color="secondary" />
@@ -285,12 +288,13 @@ function Dashboard() {
                             </div>
                         </CardHeader>
                         <CardBody>
-                            <Table
+                            {state.loading 
+                                ? <CircularProgress />
+                                : <Table
                                 tableHeaderColor="primary"
                                 tableHead={["Nombre", "Apellidos", "Fecha", "Hora"]}
                                 tableData={state.t2Data || []}
-                            />
-
+                            />}
                         </CardBody>
                         <div style={{ margin: "auto" }}>
                             <Pagination count={2} color="secondary" />
