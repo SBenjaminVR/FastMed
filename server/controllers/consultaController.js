@@ -25,8 +25,7 @@ exports.getConsultasDoctor = async (req, res) => {
         const consultasDoc = await Consulta.find({doctor: req.params.id});
         let consultas = [];
         for (let consulta of consultasDoc) {
-            let paciente = await paciente.findById(consulta.paciente);
-
+            let paciente = await Paciente.findById(consulta.paciente);
             let nombrePac = paciente.nombre;
             let apellidoPac = paciente.apellidos;
             let datosExtra = {'NombrePaciente': nombrePac, 'ApellidoPaciente': apellidoPac};
