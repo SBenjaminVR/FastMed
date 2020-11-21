@@ -11,12 +11,14 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+const UserId = localStorage.getItem('id');
 
 function Bot() {
     const classes = useStyles();
+    console.log(UserId);
     return (
         <div>
-            <h1>Soy un Bot</h1>
+            <h1>{`Su id es ${UserId}`}</h1>
             <iframe className={classes.bot} height="800" width="800" src="https://bot.dialogflow.com/1b4010a7-48f0-4845-ba2d-00c397181441"></iframe>
 
         </div>

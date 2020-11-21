@@ -26,9 +26,9 @@ function LogIn() {
         Axios.post('https://fastmedexp.herokuapp.com/api/login', userData)
         .then((response) => {
             console.log("Post succesful", response);
-            localStorage.setItem("token", response.token);
-            localStorage.setItem("type", response.type);
-            localStorage.setItem("id", response.id);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("type", response.data.type);
+            localStorage.setItem("id", response.data.id);
             history.push("/", {succes: "Logged in successfully"});
         })
         .catch((err) => {

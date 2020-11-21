@@ -36,10 +36,10 @@ const fetchConsultas = async () => {
 }
 
 const formatearPacientes = async (pacientes) => {
-    console.log("ESTOY ADENTRO DE FORMATEAR PACIENTES");
+    
     let data = [];
     for (let paciente of pacientes) {
-        console.log("ENTRE AL LOOP");
+        
         let historial = paciente.historialMedicoRelevante;
         let tablerow = [];
         tablerow.push(paciente.nombre);
@@ -48,15 +48,15 @@ const formatearPacientes = async (pacientes) => {
         historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
         data.push(tablerow);
     }
-    console.log("ANTES DE REGRESAR DATOS");
+    
     return data;
 }
 
 const formatearConsultas = async (consultas) => {
-    console.log("ESTOY ADENTRO DE FORMATEAR CONSULTAS");
+    
     let data = [];
     for (let consulta of consultas) {
-        console.log("ENTRE AL LOOP");
+        
         let tablerow = [];
         tablerow.push(consulta.NombrePaciente);
         tablerow.push(consulta.ApellidoPaciente);
@@ -64,7 +64,7 @@ const formatearConsultas = async (consultas) => {
         tablerow.push(convertirHora(consulta.fecha))
         data.push(tablerow);
     }
-    console.log("ANTES DE REGRESAR DATOS");
+    
     return data;
 }
 
