@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import Dashboard from "./components/Dashboard"
@@ -9,7 +8,6 @@ import Register from './components/Register'
 import CitaPaciente from './components/citas_paciente'
 import CitaDoctor from './components/citas_doctor'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import PrivateRoute from './components/PrivateRoute';
 import PrivateRouteD from './components/PrivateRouteD';
 import PrivateRouteU from './components/PrivateRouteU';
 
@@ -17,7 +15,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 const theme = createMuiTheme({

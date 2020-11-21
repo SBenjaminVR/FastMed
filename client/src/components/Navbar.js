@@ -30,6 +30,22 @@ function Navbar() {
     window.location.reload();
   }
 
+  const _Dashboard = _ => {
+    history.push("/");
+  }
+
+  const _CitasDoctor = _ => {
+    history.push("/doctor")
+  }
+
+  const _CitasPaciente = _ => {
+    history.push("/paciente")
+  }
+
+  const _Bot = _ => {
+    history.push("/bot")
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -40,12 +56,13 @@ function Navbar() {
           {localStorage.getItem('token')
             ? localStorage.getItem('type') === 'Doctor'
               ? <div>
-                <Button color="inherit" onClick={_logout}>Dashboard</Button>
-                <Button color="inherit" onClick={_logout}>Citas</Button>
+                <Button color="inherit" onClick={_Dashboard}>Dashboard</Button>
+                <Button color="inherit" onClick={_CitasDoctor}>Citas</Button>
                 <Button color="inherit" onClick={_logout}>Logout</Button>
               </div>
               : <div>
-                <Button color="inherit" onClick={_logout}>Bot</Button>
+                <Button color="inherit" onClick={_CitasPaciente}>Citas</Button>
+                <Button color="inherit" onClick={_Bot}>Bot</Button>
                 <Button color="inherit" onClick={_logout}>Logout</Button>
               </div>
             : <div></div>
