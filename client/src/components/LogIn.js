@@ -57,6 +57,10 @@ function LogIn() {
         });
     }
 
+    function pushRegister(){
+        history.push("/register");
+    }
+
     function checkEmptyFields() {
         var valid = true
         for (let [key, value] of Object.entries(userData)) {
@@ -79,7 +83,7 @@ function LogIn() {
                 <TextField id="filled-basic" label="Contraseña" variant="filled" className="login-field" name="password" type="password" onChange={handleChange} />
                 <br /> <br />
                 <Button variant="contained" color="primary" className="login-button" onClick={onClickLogIn}>Entrar</Button>
-                <Button color="primary" className="login-button">Nuevo usuario</Button>
+                <Button color="primary" className="login-button" onClick={pushRegister}>Nuevo usuario</Button>
             </form>
         </div>
         </div>

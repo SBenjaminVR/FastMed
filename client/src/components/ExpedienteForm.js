@@ -126,39 +126,39 @@ function ExpedienteForm() {
         <form onSubmit={handlePost}>
           <Grid container spacing={2} style={{marginBottom: 16}}>
             <Grid item xs={12} sm={6}>
-              <TextField required variant = "outlined" type="text" label="nombre" name="nombre" onChange={handleDatosPersonales} fullWidth></TextField>
+              <TextField required variant = "outlined" type="text" label="Nombre" name="nombre" onChange={handleDatosPersonales} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField required item xs={12} sm={6} variant = "outlined" type="text" label="apellidos" name="apellidos" onChange={handleDatosPersonales} fullWidth></TextField>
+              <TextField required item xs={12} sm={6} variant = "outlined" type="text" label="Apellidos" name="apellidos" onChange={handleDatosPersonales} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <TextField variant = "outlined" type="text" label="calle" name="calle"  onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+                <TextField variant = "outlined" type="text" label="Calle" name="Calle"  onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="número" name="numero" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Número" name="numero" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="código postal" name="codigoPostal" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Código postal" name="codigoPostal" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="colonia" name="colonia" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Colonia" name="colonia" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Ciudad" name="ciudad" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="estado" name="estado" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Estado" name="estado" onChange={handleDatosPersonalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField required variant = "outlined" type="text" label="teléfono" name="telefono" onChange={handleDatosPersonales} fullWidth></TextField>
+              <TextField required variant = "outlined" type="text" label="Teléfono" name="telefono" onChange={handleDatosPersonales} fullWidth></TextField>
             </Grid>
           </Grid>
 
@@ -179,31 +179,31 @@ function ExpedienteForm() {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <TextField variant = "outlined" type="text" label="calle" name="calle" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+                <TextField variant = "outlined" type="text" label="Calle" name="calle" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="número" name="numero" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Número" name="numero" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="código postal" name="codigoPostal" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Código postal" name="codigoPostal" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="colonia" name="colonia" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Colonia" name="colonia" onChange={handleDatosFiscalesDireccion}  fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="ciudad" name="ciudad" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Ciudad" name="ciudad" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={6} sm={3}>
-              <TextField variant = "outlined" type="text" label="estado" name="estado" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Estado" name="estado" onChange={handleDatosFiscalesDireccion} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField variant = "outlined" type="text" label="email" name="email" onChange={handleDatosFiscales} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Email" name="email" onChange={handleDatosFiscales} fullWidth></TextField>
             </Grid>
           </Grid>
 

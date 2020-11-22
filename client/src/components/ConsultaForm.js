@@ -123,11 +123,11 @@ fetchData();
             </Grid>
 
             <Grid item xs={12} sm={12}>
-              <TextField variant = "outlined" type="text" label="motivo" name="motivoConsulta" onChange={handleConsulta} fullWidth></TextField>
+              <TextField variant = "outlined" type="text" label="Motivo" name="motivoConsulta" onChange={handleConsulta} fullWidth></TextField>
             </Grid>
 
             <Grid item xs={12} sm={12}>
-              <TextField  item xs={12} sm={12} variant = "outlined" type="text" label="evolución"  name="evolucion" onChange={handleConsulta} fullWidth></TextField>
+              <TextField  item xs={12} sm={12} variant = "outlined" type="text" label="Evolución"  name="evolucion" onChange={handleConsulta} fullWidth></TextField>
             </Grid>
 
           </Grid>
@@ -140,11 +140,11 @@ fetchData();
               </Typography>
             </Grid>
             <Grid item xs={3}>
-              <TextField variant = "outlined" type="number" label="altura" name="altura" onChange={handleConsultaExploracion}></TextField>
+              <TextField variant = "outlined" type="number" label="Altura" name="altura" onChange={handleConsultaExploracion}></TextField>
             </Grid>
 
             <Grid item xs={3}>
-              <TextField  item xs={12} sm={6} variant = "outlined" type="number" label="peso" name="peso" onChange={handleConsultaExploracion}></TextField>
+              <TextField  item xs={12} sm={6} variant = "outlined" type="number" label="Peso" name="peso" onChange={handleConsultaExploracion}></TextField>
             </Grid>
 
             <Grid item xs={3}>

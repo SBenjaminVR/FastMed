@@ -78,6 +78,10 @@
   align-self: flex-end;
 }
 
+.x{
+  width: 450px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
