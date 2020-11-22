@@ -16,6 +16,7 @@ import axios from 'axios'
 const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const REGISTROS_POR_PAGINA = 5;
+const DOC = localStorage.getItem('id');
 
 const convertirFecha = (fechaNativa) => {
     let fechaNueva = new Date(fechaNativa);
@@ -29,12 +30,12 @@ const convertirHora = (fechaNativa) => {
 }
 
 const fetchPacientes = async () => {
-    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes/doctor/5fb18ebbaac5d00878fa63ea`);
+    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes/doctor/${DOC}`);
     return data;
 }
 
 const fetchConsultas = async () => {
-    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/consultas/doctor/5fb18ebbaac5d00878fa63ea`);
+    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/consultas/doctor/${DOC}`);
     return data;
 }
 
