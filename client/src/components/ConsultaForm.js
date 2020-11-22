@@ -8,6 +8,8 @@ import Divider from '@material-ui/core/Divider';
 import { useHistory } from 'react-router-dom';
 import Select from '@material-ui/core/Select';
 
+const DOC = localStorage.getItem('id');
+
 const useStyles = makeStyles((theme) => ({
     layout: {
       width: 'auto',
@@ -46,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
         observacion: ""
       },
       tratamiento: "",
-      doctor: "5fb1b343a0f77a4cac1af4a4",
+      doctor: DOC,
       paciente:""
     },
   };
