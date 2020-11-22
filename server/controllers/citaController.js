@@ -56,6 +56,33 @@ exports.getCitasDoctor = async (req, res) => {
     }
 };
 
+exports.getProximaCitaDoctor = async (req, res) => {
+    try {
+        let fechaManaña = new Date(), fechaAyer = new Date();
+        fechaManaña.setDate(fechaManaña.getDate() + 1);
+        fechaAyer.setDate(fechaAyer.getDate() - 1);
+
+        let citasDoctor = await Cita.find({
+            doctor: req.params.id,
+            fecha: {$gt: fechaAyer, $lt: fechaManaña} 
+        }).sort({fecha: -1});
+        let citasData = await obtenerInformacionExtra(citasDoctor);
+
+        res.status(200).json({
+            status: 'success',
+            results: citasDoctor.length,
+            payload: {
+                citasData
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
+}
+
 exports.getCitasPaciente = async (req, res) => {
     try {
         const citasPaciente = await Cita.find({paciente: req.params.id});

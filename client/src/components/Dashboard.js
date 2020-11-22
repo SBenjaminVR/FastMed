@@ -39,6 +39,11 @@ const fetchConsultas = async () => {
     return data;
 }
 
+const fetchCitas = async () => {
+    const data  = await axios.get(`https://fastmedexp.herokuapp.com/api/citas/doctor/proxima/${DOC}`);
+    return data;
+}
+
 const formatearPacientes = async (pacientes) => {
 
     let data = [];
@@ -172,6 +177,7 @@ function Dashboard() {
     let history = useHistory();
     const _Expediente = _ => { history.push("/expediente") }
     const _Consultas = _ => { history.push("/consulta") }
+    const _Citas = _ => { history.push("/doctor") }
 
     const [state, setState] = useState({
         loading: true, 
@@ -191,6 +197,8 @@ function Dashboard() {
         const fetchData = async () => {
             const pacientes = await fetchPacientes();
             const consultas = await fetchConsultas();
+            const citas = await fetchCitas();
+            console.log(citas);
 
             const table1Data = await formatearPacientes(pacientes.data.pacientes);
             const table2Data = await formatearConsultas(consultas.data.consultas);
@@ -283,8 +291,8 @@ function Dashboard() {
                             justifyContent: "flex-end",
                             textAlign: "right",
                         }}>
-                            <Fab size="small" color="secondary" aria-label="add">
-                                <AddIcon />
+                            <Fab size="small" color="secondary" aria-label="add" onClick={_Citas}>
+                                <AddIcon/>
                             </Fab>
                         </div>
                     </div>
