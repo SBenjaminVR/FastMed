@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+const UserId = localStorage.getItem('id');
+
   const initialState = {
     loading: false,
     error: "",
@@ -63,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
         antecedentesMedicos: "",
         medicamenteUsoDiario: ""
       },
-      doctor: "5fb1b343a0f77a4cac1af4a4"
+      doctor: UserId
     }
   };
 

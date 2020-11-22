@@ -2,13 +2,27 @@ import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 
 var userData = {
     email: "",
     password: ""
 }
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    log:{
+        display: 'flex',
+        textAlign:'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+  }));
+
 function LogIn() {
+    const classes = useStyles();
     let history = useHistory();
 
         // Update user data from input fields
@@ -53,8 +67,12 @@ function LogIn() {
     
     return (
         <div>
-            <h1>Login</h1>
+            <div className={classes.log}>
+                <h1>Login</h1>
+                </div>
+            
             <div className="login-form">
+            
             <form id="login-form">
                 <TextField id="filled-basic" label="Email" variant="filled" className="login-field" name="email" onChange={handleChange} />
                 <br />

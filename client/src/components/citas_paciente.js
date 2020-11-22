@@ -14,8 +14,8 @@ const convertirFecha = (fechaNativa) => {
 }
 
 const fetchCitas = async () =>  {
-    //const patient = window.localStorage.get('patient')
-    const {data } = await axios.get(`https://fastmedexp.herokuapp.com/api/citas/paciente/5fb1cd3c75b837507498a7e7`) 
+    const UserId = localStorage.getItem('id');
+    const {data } = await axios.get('https://fastmedexp.herokuapp.com/api/citas/paciente/' + UserId) 
 
     return data.payload
 }
@@ -58,7 +58,7 @@ console.log(cita);
 return (
     <Paper className ="cita"> 
         <Grid container direction="row" justify="space-between">
-            <div className="citaDetalles"><Grid container direction="column"> <div className="citaName">{cita.NombreDoctor}</div> <div className="citaMotivo">{cita.motivoCita}</div></Grid></div>
+            <div className="citaDetalles"><Grid container direction="column"> <div className="citaName">{cita.NombreDoctor}</div> <div className="citaMotivo"> <strong> Sintoma: </strong> { cita.sintomas} - <strong>Motivo Extra: </strong> {cita.motivoCita} </div></Grid></div>
             <div className="fechaCita">{cita.fecha}</div>
         </Grid>
     </Paper>
