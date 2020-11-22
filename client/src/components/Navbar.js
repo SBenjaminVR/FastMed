@@ -42,14 +42,6 @@ function Navbar() {
     history.push("/paciente")
   }
 
-  const _Expediente = _ => {
-    history.push("/expediente")
-  }
-
-  const _Consultas = _ => {
-    history.push("/consulta")
-  }
-
   const _Bot = _ => {
     history.push("/bot")
   }
@@ -65,8 +57,6 @@ function Navbar() {
             ? localStorage.getItem('type') === 'Doctor'
               ? <div>
                 <Button color="inherit" onClick={_Dashboard}>Dashboard</Button>
-                <Button color="inherit" onClick={_Expediente}>Registar Paciente</Button>
-                <Button color ="inherit" onClick={_Consultas}>Registrar Consulta</Button>
                 <Button color="inherit" onClick={_CitasDoctor}>Citas</Button>
                 <Button color="inherit" onClick={_logout}>Logout</Button>
               </div>

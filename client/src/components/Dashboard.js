@@ -10,10 +10,12 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios'
 
-const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes','Sabado'];
+const dias = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const REGISTROS_POR_PAGINA = 5;
 
 const convertirFecha = (fechaNativa) => {
     let fechaNueva = new Date(fechaNativa);
@@ -27,7 +29,7 @@ const convertirHora = (fechaNativa) => {
 }
 
 const fetchPacientes = async () => {
-    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes/doctor/5fb18ebbaac5d00878fa63ea`); 
+    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes/doctor/5fb18ebbaac5d00878fa63ea`);
     return data;
 }
 
@@ -37,10 +39,10 @@ const fetchConsultas = async () => {
 }
 
 const formatearPacientes = async (pacientes) => {
-    
+
     let data = [];
     for (let paciente of pacientes) {
-        
+
         let historial = paciente.historialMedicoRelevante;
         let tablerow = [];
         tablerow.push(paciente.nombre);
@@ -49,15 +51,15 @@ const formatearPacientes = async (pacientes) => {
         historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
         data.push(tablerow);
     }
-    
+
     return data;
 }
 
 const formatearConsultas = async (consultas) => {
-    
+
     let data = [];
     for (let consulta of consultas) {
-        
+
         let tablerow = [];
         tablerow.push(consulta.NombrePaciente);
         tablerow.push(consulta.ApellidoPaciente);
@@ -65,8 +67,28 @@ const formatearConsultas = async (consultas) => {
         tablerow.push(convertirHora(consulta.fecha))
         data.push(tablerow);
     }
-    
+
     return data;
+}
+
+const searchRegex = (input, elementos) => {
+    input = input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    let regex = new RegExp(input, 'i');
+    let filtrados = [];
+        for (let pac of elementos) {
+            for (let field of pac) {
+                field = field.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (regex.test(field)) {
+                    filtrados.push(pac);
+                    break;
+                }
+            }
+        }
+    return filtrados;
+}
+
+const cortarDatos = (tabla, value) => {
+    return tabla.slice(REGISTROS_POR_PAGINA*value-REGISTROS_POR_PAGINA, REGISTROS_POR_PAGINA*value);
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -146,24 +168,99 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Dashboard() {
+    let history = useHistory();
+    const _Expediente = _ => { history.push("/expediente") }
+    const _Consultas = _ => { history.push("/consulta") }
+
     const [state, setState] = useState({
-        loading: true, t1Data: [], t2Data: []
+        loading: true, 
+        pacientes: [], 
+        consultas: [], 
+        t1DataF: [], 
+        t2DataF: [], 
+        t1Data: [], 
+        t2Data: [], 
+        t1count: 1,
+        t2count: 1,
+        pag1: 1, 
+        pag2: 1
     })
-    
+
     useEffect(() => {
         const fetchData = async () => {
             const pacientes = await fetchPacientes();
             const consultas = await fetchConsultas();
-        
-            const table1Data = await formatearPacientes(pacientes.data.pacientes); 
+
+            const table1Data = await formatearPacientes(pacientes.data.pacientes);
             const table2Data = await formatearConsultas(consultas.data.consultas);
 
-            setState((prevState) => ({...prevState, t1Data: table1Data, t2Data: table2Data, loading: false}))
+            setState((prevState) => ({ ...prevState, 
+                pacientes: table1Data, 
+                consultas: table2Data, 
+                loading: false,
+                t1Data: cortarDatos(table1Data, 1),
+                t2Data: cortarDatos(table2Data, 1),
+                t1DataF: table1Data,
+                t2DataF: table2Data,
+                t1count: Math.ceil(table1Data.length / REGISTROS_POR_PAGINA),
+                t2count: Math.ceil(table2Data.length / REGISTROS_POR_PAGINA)
+            }))
         }
-    fetchData();
+        fetchData();
     }, [])
     console.log(state);
     const classes = useStyles();
+
+    const searchBar1OnChange = (event) => {
+        if (event.target.value !== '') {
+            let datos = searchRegex(event.target.value, state.pacientes)
+            setState((prevState) => ({ ...prevState, 
+                t1Data: cortarDatos(datos, 1), 
+                t1DataF: datos,
+                t1count: Math.ceil(datos.length / REGISTROS_POR_PAGINA),
+                pag1: 1
+            }))
+        }
+        else {
+            setState((prevState) => ({ ...prevState, 
+                t1Data: cortarDatos(state.pacientes, 1),
+                t1DataF: state.pacientes,
+                t1count: Math.ceil(state.pacientes.length / REGISTROS_POR_PAGINA),
+                pag1: 1
+            }))
+        }
+    }
+
+    const searchBar2OnChange = (event) => {
+        if (event.target.value !== '') {
+            let datos = searchRegex(event.target.value, state.consultas)
+            setState((prevState) => ({ ...prevState, 
+                t2Data: cortarDatos(datos, 1),
+                t2DataF: datos,
+                t2count: Math.ceil(datos.length / REGISTROS_POR_PAGINA),
+                pag2: 1
+            }))
+        }
+        else {
+            setState((prevState) => ({ ...prevState, 
+                t2Data: cortarDatos(state.consultas, 1), 
+                t2DataF: state.consultas,
+                t2count: Math.ceil(state.consultas.length / REGISTROS_POR_PAGINA),
+                pag2: 1
+            }))
+        }
+    }
+
+    const cambiarPaginaT1 = (event, value) => {
+        let datosCortados = cortarDatos(state.t1DataF, value);
+        setState((prevState) => ({ ...prevState, t1Data: datosCortados, pag1: value }))
+    };
+
+    const cambiarPaginaT2 = (event, value) => {
+        let datosCortados = cortarDatos(state.t2DataF, value);
+        setState((prevState) => ({ ...prevState, t2Data: datosCortados, pag2: value }))
+    };
+
     return (
         <div>
             <div>
@@ -225,26 +322,27 @@ function Dashboard() {
                                                 input: classes.inputInput,
                                             }}
                                             inputProps={{ 'aria-label': 'Buscar' }}
+                                            onChange={searchBar1OnChange}
                                         />
                                     </div>
-                                    <Fab size="small" color="secondary" aria-label="add">
+                                    <Fab size="small" color="secondary" aria-label="add" onClick={_Expediente}>
                                         <AddIcon />
                                     </Fab>
                                 </div>
                             </div>
                         </CardHeader>
                         <CardBody>
-                        {state.loading 
+                            {state.loading
                                 ? <CircularProgress />
                                 : <Table
-                                tableHeaderColor="primary"
-                                tableHead={["Nombre", "Apellidos", "Antecedentes Médicos", "Médicamentos de uso diario"]}
-                                tableData={ state.t1Data || [] }
-                            />
-                        }
+                                    tableHeaderColor="primary"
+                                    tableHead={["Nombre", "Apellidos", "Antecedentes Médicos", "Médicamentos de uso diario"]}
+                                    tableData={state.t1Data || []}
+                                />
+                            }
                         </CardBody>
                         <div style={{ margin: "auto" }}>
-                            <Pagination count={10} color="secondary" />
+                            <Pagination count={state.t1count} page={state.pag1} onChange={cambiarPaginaT1} color="secondary" />
                         </div>
                     </Card>
                 </div>
@@ -279,25 +377,26 @@ function Dashboard() {
                                                 input: classes.inputInput,
                                             }}
                                             inputProps={{ 'aria-label': 'Buscar' }}
+                                            onChange={searchBar2OnChange}
                                         />
                                     </div>
-                                    <Fab size="small" color="secondary" aria-label="add">
+                                    <Fab size="small" color="secondary" aria-label="add" onClick={_Consultas}>
                                         <AddIcon />
                                     </Fab>
                                 </div>
                             </div>
                         </CardHeader>
                         <CardBody>
-                            {state.loading 
+                            {state.loading
                                 ? <CircularProgress />
                                 : <Table
-                                tableHeaderColor="primary"
-                                tableHead={["Nombre", "Apellidos", "Fecha", "Hora"]}
-                                tableData={state.t2Data || []}
-                            />}
+                                    tableHeaderColor="primary"
+                                    tableHead={["Nombre", "Apellidos", "Fecha", "Hora"]}
+                                    tableData={state.t2Data || []}
+                                />}
                         </CardBody>
                         <div style={{ margin: "auto" }}>
-                            <Pagination count={2} color="secondary" />
+                            <Pagination count={state.t2count} page={state.pag2} onChange={cambiarPaginaT2} color="secondary" />
                         </div>
                     </Card>
                 </div>
