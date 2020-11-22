@@ -38,11 +38,11 @@ const useStyles = makeStyles((theme) => ({
     error: "",
     data: [],
     form: {
-      fecha:"",
+      paciente: "",
       sintomas: "",
       motivoCita: "",
       doctor: DOC,
-      paciente:""
+      fecha: ""
     },
   };
 
