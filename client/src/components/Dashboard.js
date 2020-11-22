@@ -40,7 +40,7 @@ const fetchConsultas = async () => {
 }
 
 const fetchCitas = async () => {
-    const data  = await axios.get(`https://fastmedexp.herokuapp.com/api/citas/doctor/proxima/${DOC}`);
+    const { data }  = await axios.get(`https://fastmedexp.herokuapp.com/api/citas/doctor/proxima/${DOC}`);
     return data;
 }
 
@@ -177,7 +177,7 @@ function Dashboard() {
     let history = useHistory();
     const _Expediente = _ => { history.push("/expediente") }
     const _Consultas = _ => { history.push("/consulta") }
-    const _Citas = _ => { history.push("/doctor") }
+    const _Citas = _ => { history.push("/crearCita") }
 
     const [state, setState] = useState({
         loading: true, 
@@ -190,7 +190,8 @@ function Dashboard() {
         t1count: 1,
         t2count: 1,
         pag1: 1, 
-        pag2: 1
+        pag2: 1,
+        citaHoy: ''
     })
 
     useEffect(() => {
@@ -198,7 +199,11 @@ function Dashboard() {
             const pacientes = await fetchPacientes();
             const consultas = await fetchConsultas();
             const citas = await fetchCitas();
-            console.log(citas);
+
+            let citasDeHoy = citas.payload.citasData, text = "No hay citas programadas para hoy";
+            if (citasDeHoy.length) {
+                text = `${citasDeHoy[0].NombrePaciente} - ${convertirFecha(citasDeHoy[0].fecha)} ${convertirHora(citasDeHoy[0].fecha)}`
+            }
 
             const table1Data = await formatearPacientes(pacientes.data.pacientes);
             const table2Data = await formatearConsultas(consultas.data.consultas);
@@ -212,7 +217,8 @@ function Dashboard() {
                 t1DataF: table1Data,
                 t2DataF: table2Data,
                 t1count: Math.ceil(table1Data.length / REGISTROS_POR_PAGINA),
-                t2count: Math.ceil(table2Data.length / REGISTROS_POR_PAGINA)
+                t2count: Math.ceil(table2Data.length / REGISTROS_POR_PAGINA),
+                citaHoy: text
             }))
         }
         fetchData();
@@ -296,7 +302,7 @@ function Dashboard() {
                             </Fab>
                         </div>
                     </div>
-                    <h3 className={classes.cardCategoryWhite}>Datos de Paciente - Fecha y Hora</h3>
+                    <h3 className={classes.cardCategoryWhite}>{state.citaHoy}</h3>
                 </CardHeader>
             </div>
             <div style={{ display: "flex", justifyContent: "space-around" }}>

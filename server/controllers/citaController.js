@@ -153,6 +153,24 @@ exports.createCita = async (req, res) => {
     }
 };
 
+exports.createCitaManual = async (req, res) => {
+    try {
+        const newCita = await Cita.create(req.body);
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                cita: newCita
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: 'Invalid data sent'
+        })
+    }
+};
+
 exports.updateCita = async (req, res) => {
     try {
         const updatedCita = await Cita.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });

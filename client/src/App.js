@@ -12,6 +12,7 @@ import PrivateRouteD from './components/PrivateRouteD';
 import PrivateRouteU from './components/PrivateRouteU';
 import Consulta from './components/ConsultaForm';
 import Expediente from './components/ExpedienteForm';
+import CrearCita from './components/CrearCita';
 
 import {
   BrowserRouter as Router,
@@ -59,6 +60,7 @@ function App() {
             <PrivateRouteD path="/expediente" component={Expediente}/>
             <PrivateRouteD path="/doctor" component={CitaDoctor} />
             <PrivateRouteD path="/consulta" component={Consulta}/>
+            <PrivateRouteD path="/crearCita" component={CrearCita}/>
             <PrivateRouteU path="/bot" component={Bot} />
             <PrivateRouteD path="/" component={Dashboard} />
           </Switch>
