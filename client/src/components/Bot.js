@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     lista:{
-        display: 'flex',
+        // display: 'flex',
+
     }
   }));
 
