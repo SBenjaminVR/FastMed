@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { Grid, TextField, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
@@ -77,7 +77,6 @@ function ExpedienteFormFilled(props) {
               } catch (err) {
                 console.error(err.response);
               }
-            
         }
         else {
             try {
