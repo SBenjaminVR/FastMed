@@ -109,6 +109,7 @@ fetchData();
               name="paciente"
               onChange={handleConsulta}
             >
+              <option label="-- Escoge un paciente --"></option>
               {state.pacientes.map(paciente => (<option value= {paciente._id}>{`${paciente.nombre} ${paciente.apellidos}`}</option>))}
             </Select>
             </Grid>

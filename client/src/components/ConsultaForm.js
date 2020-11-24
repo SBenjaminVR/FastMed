@@ -120,6 +120,7 @@ fetchData();
               name="paciente"
               onChange={handleConsulta}
             >
+              <option label="-- Escoge un paciente --"></option>
               {state.pacientes.map(paciente => (<option value= {paciente._id}>{`${paciente.nombre} ${paciente.apellidos}`}</option>))}
             </Select>
             </Grid>
@@ -138,7 +139,7 @@ fetchData();
             <Grid item xs={12} sm={12}>
               <Divider variant="middle" />
               <Typography component="h2" variant="h4" align="center" style={{marginTop: 16}}>
-                Explorarción Física
+                Exploración Física
               </Typography>
             </Grid>
             <Grid item xs={3}>
