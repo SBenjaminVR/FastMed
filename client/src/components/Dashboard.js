@@ -55,6 +55,7 @@ const formatearPacientes = async (pacientes) => {
         tablerow.push(paciente.apellidos);
         historial.antecedentesMedicos ? tablerow.push(historial.antecedentesMedicos) : tablerow.push("-");
         historial.medicamenteUsoDiario ? tablerow.push(historial.medicamenteUsoDiario) : tablerow.push("-");
+        tablerow.push(paciente._id);
         data.push(tablerow);
     }
 
@@ -71,6 +72,7 @@ const formatearConsultas = async (consultas) => {
         tablerow.push(consulta.ApellidoPaciente);
         tablerow.push(convertirFecha(consulta.fecha))
         tablerow.push(convertirHora(consulta.fecha))
+        tablerow.push(consulta._id)
         data.push(tablerow);
     }
 
@@ -82,9 +84,9 @@ const searchRegex = (input, elementos) => {
     let regex = new RegExp(input, 'i');
     let filtrados = [];
         for (let pac of elementos) {
-            for (let field of pac) {
-                field = field.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                if (regex.test(field)) {
+            for (let i = 0; i < 4; i++) {
+                pac[i] = pac[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (regex.test(pac[i])) {
                     filtrados.push(pac);
                     break;
                 }
@@ -353,6 +355,7 @@ function Dashboard() {
                                     tableHeaderColor="primary"
                                     tableHead={["Nombre", "Apellidos", "Antecedentes Médicos", "Médicamentos de uso diario"]}
                                     tableData={state.t1Data || []}
+                                    tableType="expediente"
                                 />
                             }
                         </CardBody>
@@ -408,6 +411,7 @@ function Dashboard() {
                                     tableHeaderColor="primary"
                                     tableHead={["Nombre", "Apellidos", "Fecha", "Hora"]}
                                     tableData={state.t2Data || []}
+                                    tableType="consulta"
                                 />}
                         </CardBody>
                         <div style={{ margin: "auto" }}>
