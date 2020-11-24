@@ -177,9 +177,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     let history = useHistory();
-    const _Expediente = _ => { history.push("/expediente") }
-    const _Consultas = _ => { history.push("/consulta") }
-    const _Citas = _ => { history.push("/crearCita") }
+    const _Expediente = _ => { history.push("/expediente"); window.location.reload();}
+    const _Consultas = _ => { history.push("/consulta"); window.location.reload(); }
+    const _Citas = _ => { history.push("/crearCita"); window.location.reload(); }
 
     const [state, setState] = useState({
         loading: true, 
