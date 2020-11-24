@@ -80,14 +80,14 @@ function Form() {
 
   useEffect(() => {
     const fetchData = async () => {
-        const {pacientes} = await fetchPacientes();  
-        setState((prevState) => ({...prevState, pacientes: pacientes}))
+        const {users} = await fetchPacientes();  
+        setState((prevState) => ({...prevState, pacientes: users}))
     }
 fetchData();
 }, [])
 
   const fetchPacientes = async () => {
-    const {data } = await axios.get(`https://fastmedexp.herokuapp.com/api/pacientes`); 
+    const { data } = await axios.get(`https://fastmedexp.herokuapp.com/api/users`); 
     return data.data;
   }
   
